@@ -69,35 +69,52 @@ We can ask him which producer, studio, source, genre and type of anime he prefer
 We can also ask him to give us some indications about the time he has to watch it (recommendation based on the number of episodes and their duration). 
 Finally, with their age, we can also better target our recommendation thanks to the `Rating` variable. 
 
+For this project, we will probably use the following packages: `knitr`, `shiny`'s packages, `devtools`, `roxygen2` and/or `pkgdown`.
 
 
 ## Timeline and milestones
 
 ```{r, echo = FALSE, message = FALSE}
-install.packages("remotes")
-remotes::install_github("giocomai/ganttrify")
+library(remotes)
+remotes::install_github("giocomai/ganttrify", force = TRUE)
+library(ganttrify)
+
+project_G5 <- tibble::tribble(~wp, ~activity, ~start_date, ~end_date,
+                                         "Project flow", "Project Proposal", 
+                              "2021-11-01", "2021-11-07", 
+                                         "Project flow", 
+                              "Create shiny app with our variables of interest",
+                              "2021-11-07", "2021-11-24",
+                                         "Project flow", "Update and/or add new things",
+                              "2021-11-24","2021-12-08",
+                                         "Project flow", 
+                              "Finalization and prepare final presentation",
+                              "2021-12-08","2021-12-15",
+                                         "Presentation", "Final presentation", 
+                              "2021-12-15", "2021-12-20") 
 
 
-# Create variables
+# does not work:
+#ganttrify(project = project_G5,
+          #project_start_date = "2021-11-01",
+          #font_family = "Roboto Condensed")
 
-activity <- c('Project Proposal', 'Create shiny app with our variables of interest', 
-              'Update and/or add new things', 
-              'Finalization, make the app easy to read and prepare final presentation',
-              'Final presentation')
-start_date <- c(01.11, 07.11 , 24.11, 08.12, 15.12)
-end_date <- c(07.11, 24.11, 08.12, 15.12, 20.12)
-# Creation of a data frame
-organisation_G5 <- data.frame(activity, start_date, end_date)
-
-ganttrify(project = organisation_G5,
-          hide_wp = TRUE,
-          project_start_date = "2021-11",
-          font_family = "Roboto Condensed")
 ```
-
-describe the timeline of your project and indicate key intermediary goals in a Gantt chart (see this package for example).
 
 
 ## Management plan
 
-explain how you plan to collaborate (weekly meeting on Zoom, …) and indicate responsabilities (each member of the team should be at least responsible for one part of the project).
+In order to move forward with our project, we will meet every Wednesday morning on Zoom. 
+We will always try to talk about the project but, having the homework in parallel, we may not talk about it only. 
+Anyway, at the end of the fourth assignment, we will dedicate this time only to the project.
+
+We will all work on the project but some tasks will be more specific to certain people: 
+
+- Meri will take care of cleaning the data well, keeping only the necessary and making it "usable" for our work.
+
+- Massimo and Xavier will take care of the parts of the code that need the most attention.
+
+- Vania will take care of visualizing what we want to put on our application.
+
+- Marie will take care of the design of the site, so that it will be nice and easy to read/use.
+
