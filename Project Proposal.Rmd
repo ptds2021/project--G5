@@ -108,13 +108,19 @@ In order to move forward with our project, we will meet every Wednesday morning 
 We will always try to talk about the project but, having the homework in parallel, we may not talk about it only. 
 Anyway, at the end of the fourth assignment, we will dedicate this time only to the project.
 
-We will all work on the project but some tasks will be more specific to certain people: 
+Here are the parts of the project, the first member in the parenthesis is the responsible, and the other will help him if needed:
+  
+  R-Package:
+      - description file of package (Vania, Xavier)
+      - R/RcPP Functions with documentations (Massimo, Meri)
+      - Package Skeleton (Meri, Marie)
+      - Shiny App (Meri, Massimo)
+      - Be sure that package can be installed from GitHub (Vania, Xavier)
+      - A vignette illustrating the package/shinyApp with example (Xavier, Vania)
+      
+  Other:
+      - Blog (Marie, Vania)
+      - Explaining Video (Xavier, Vania)
+      - control the To-Do list (issues) on github (Vania, Xavier)
 
-- Meri will take care of cleaning the data well, keeping only the necessary and making it "usable" for our work.
-
-- Massimo and Xavier will take care of the parts of the code that need the most attention.
-
-- Vania will take care of visualizing what we want to put on our application.
-
-- Marie will take care of the design of the site, so that it will be nice and easy to read/use.
-
+¨
