@@ -74,30 +74,36 @@ For this project, we will probably use the following packages: `knitr`, `shiny`'
 
 ## Timeline and milestones
 
-```{r, echo = FALSE, message = FALSE}
+Here is a timeline of our project organisation. You can see below it the responsible for each task. 
+
+```{r, echo = FALSE, message = FALSE, fig.width = 8}
 library(remotes)
 remotes::install_github("giocomai/ganttrify", force = TRUE)
 library(ganttrify)
 
 project_G5 <- tibble::tribble(~wp, ~activity, ~start_date, ~end_date,
+                              "Organisation", "Control the To-Do list", 
+                              "2021-11-01", "2021-12-20", 
                                          "Project flow", "Project Proposal", 
                               "2021-11-01", "2021-11-07", 
                                          "Project flow", 
-                              "Create shiny app with our variables of interest",
+                              "R/RcPP Functions, Package Skeleton",
                               "2021-11-07", "2021-11-24",
-                                         "Project flow", "Update and/or add new things",
-                              "2021-11-24","2021-12-08",
+                                         "Project flow", "Shiny app, blog, description of Package",
+                              "2021-11-24", "2021-12-08",
                                          "Project flow", 
-                              "Finalization and prepare final presentation",
-                              "2021-12-08","2021-12-15",
+                              "Video and finalization of the project",
+                              "2021-12-08", "2021-12-15",
                                          "Presentation", "Final presentation", 
                               "2021-12-15", "2021-12-20") 
 
-
-# does not work:
-#ganttrify(project = project_G5,
-          #project_start_date = "2021-11-01",
-          #font_family = "Roboto Condensed")
+ganttrify(project = project_G5,
+          by_date = TRUE,
+          exact_date = TRUE,
+          size_wp = 3,
+          alpha_wp = 0.5,
+          size_activity = 2,
+          project_start_date = "2021-11-01")
 
 ```
 
@@ -110,17 +116,18 @@ Anyway, at the end of the fourth assignment, we will dedicate this time only to 
 
 Here are the parts of the project, the first member in the parenthesis is the responsible, and the other will help him if needed:
   
-  R-Package:
-      - description file of package (Vania, Xavier)
-      - R/RcPP Functions with documentations (Massimo, Meri)
-      - Package Skeleton (Meri, Marie)
-      - Shiny App (Meri, Massimo)
-      - Be sure that package can be installed from GitHub (Vania, Xavier)
-      - A vignette illustrating the package/shinyApp with example (Xavier, Vania)
-      
-  Other:
-      - Blog (Marie, Vania)
-      - Explaining Video (Xavier, Vania)
-      - control the To-Do list (issues) on github (Vania, Xavier)
+R-Package:
 
-¨
+- R/RcPP Functions with documentations (Massimo, Meri)
+- Package Skeleton (Meri, Marie)
+- Shiny App (Meri, Massimo)
+- Description file of package (Vania, Xavier)
+- Be sure that package can be installed from GitHub (Vania, Xavier)
+- A vignette illustrating the package/shinyApp with example (Xavier, Vania)
+      
+Other:
+  
+- Blog (Marie, Vania)
+- Explaining Video (Xavier, Vania)
+- Control the To-Do list (issues) on github (Vania, Xavier)
+
