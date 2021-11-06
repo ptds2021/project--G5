@@ -76,7 +76,7 @@ For this project, we will probably use the following packages: `knitr`, `shiny`'
 
 Here is a timeline of our project organisation. You can see below it the responsible for each task. 
 
-```{r, echo = FALSE, message = FALSE, fig.width = 8}
+```{r, echo = FALSE, results = FALSE, message = FALSE, fig.width = 8}
 library(remotes)
 remotes::install_github("giocomai/ganttrify", force = TRUE)
 library(ganttrify)
