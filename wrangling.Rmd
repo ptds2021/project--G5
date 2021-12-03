@@ -1,0 +1,71 @@
+---
+title: "wrangling"
+output: html_document
+---
+
+```{r}
+#import dataset
+
+library(readr)
+library(dplyr)
+library(tidyverse)
+anime <- read_csv("data/anime.csv", col_types = cols(`Japanese name` = col_skip(), 
+    `Score-10` = col_skip(), `Score-9` = col_skip(), 
+    `Score-8` = col_skip(), `Score-7` = col_skip(), 
+    `Score-6` = col_skip(), `Score-5` = col_skip(), 
+    `Score-4` = col_skip(), `Score-3` = col_skip(), 
+    `Score-2` = col_skip(), `Score-1` = col_skip()))
+
+
+#cleaning data: no NA nor Unknown
+anime <- anime %>%
+  filter(Score!='Unknown') %>%
+  filter(Ranked!='Unknown') %>% 
+  filter('English name'!='Unknown') %>%
+  filter(Rating!='Unknown') %>%
+  filter(Duration>10) %>%
+  filter(Producers!='Unknown'|Studios!='Unknown'|Licensors='Unknown')
+
+# separate genders
+anime <- anime %>% separate(Genders, c("gender1", "gender2", "gender3", "gender4","gender5", "gender6"), sep=",")
+
+#Convert 2hr into 2hr.00min
+anime <- anime %>%
+  mutate(Duration= ifelse(Duration == "2 hr.","2 hr. 00 min",
+                          ifelse(Duration == "1 hr.","1 hr. 00 min", paste0(Duration))))
+
+#Convert time in min to have numerical feature
+library(stringr)
+anime$Duration  <- sapply(str_extract_all(anime$Duration , "\\d+"), function(x) {
+              x1 <- as.numeric(x)
+          if(length(x1) > 1) x1[1]*60 + x1[2] else x1[1] })
+
+anime$Duration<-as.integer(anime$Duration)
+
+#mutate a new column to categorize duration
+anime <- anime %>% mutate(Duration_C = ifelse(Duration< 30, "Less than 30min", ifelse(Duration>= 30 & Duration < 60, "Less than 1h",ifelse(Duration>= 60 & Duration < 120,"more than 1h","more than 2h"))))%>%
+  relocate(Duration_C,.after=Duration)
+
+anime$Duration_C <- factor(anime$Duration_C, levels = c("Less than 30min", "Less than 1h", "more than 1h","more than 2h"))
+```
+
+```{r}
+##firsttry
+thebestfit<-function(data, age){
+
+  if (age < 13){
+    data<-filter(data, Rating=='G - All Ages' | Rating== 'PG - Children')
+  }
+    if (age >= 13){
+      data<-filter(data, Rating=='G - All Ages' | Rating== 'PG-13 - Teens 13 or older')
+    }
+      if (age > 16) {
+        data<-filter(data, Rating=='G - All Ages' | Rating== 'R+ - Mild Nudity' |  Rating== 'R - 17+ (violence & profanity)'
+)
+      }
+  
+}
+
+a<-thebestfit(data=anime,age=3)
+```
+
