@@ -1,12 +1,16 @@
-Package: PorjectG5
+Package: ProjectG5
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Anime recommendation
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: c(
+    person("Marie", "Bellier", email = 'marie.bellier@unil.ch', role='aut'),
+    person("Meri", "Likoska", email = 'meri.likoska@unil.ch', role='aut'),
+    person("Massimo", "Finini", email = 'Massimo.finini@unil.ch', role='aut'),
+    person("Vania", "Rodrigues Telo Ramos", email = 'Vania.rodriguesteloramos@unil.ch', role='aut'),
+    person("Xavier", "Renger", email = 'Xavier.renger@unil.ch', role='aut'))
+Maintainer: M.Likoska <meri.likoska@unil.ch> - M.Finini <Massimo.finini@unil.ch> - M.Bellier <marie.bellier@unil.ch> - V.Rodrigues <vanie.rodriguesteloramos@unil.ch> - X.Renger <xavier.renger@unil.ch>
+Description: This package is used to make anime recommendations. 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
