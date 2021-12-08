@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(PorjectG5)
+library(ProjectG5)
 ```
 
 ### Welcome to our project about anime !
@@ -24,3 +24,4 @@ The Shiny App we have created for this project concerns an anime recommendation 
 - age of the person
 - preferred anime genre (action, fantasy, etc.)
 - time available to watch the anime
+
