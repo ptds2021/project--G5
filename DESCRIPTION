@@ -11,6 +11,8 @@ Author: c(
 Maintainer: M.Likoska <meri.likoska@unil.ch> - M.Finini <Massimo.finini@unil.ch> - M.Bellier <marie.bellier@unil.ch> - V.Rodrigues <vanie.rodriguesteloramos@unil.ch> - X.Renger <xavier.renger@unil.ch>
 Description: This package is used to make anime recommendations. 
 License: MIT + file LICENSE
+Depends: R (>= 3.5.0)
+Imports: ggplot2 (>= 3.0.0), dplyr
 Encoding: UTF-8
 LazyData: true
 Suggests: 
