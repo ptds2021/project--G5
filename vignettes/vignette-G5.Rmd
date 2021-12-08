@@ -25,3 +25,10 @@ The Shiny App we have created for this project concerns an anime recommendation 
 - preferred anime genre (action, fantasy, etc.)
 - time available to watch the anime
 
+These different parameters will give a recommendation of an anime name.
+
+### Example of how to use the application
+
+Let's take the example of a 15 years old person, who likes fantasy and comedy anime and has 30 minutes to watch an episode. This person will first write his/her age, then the two genres he/she likes (Comedy, Fantasy) thanks to the drop-down menu offered by the application. Then, she will take the cursor and indicate "30" in the time available per minutes.
+
+We will then notice that Naruto will appear first as a recommendation. This seems plausible, since Naruto is an anime mainly aimed at children and teenagers. Moreover, each episode of Naturo lasts between 20 and 30 minutes.
