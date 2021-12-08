@@ -1,0 +1,19 @@
+---
+title: "vignette-G5"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vignette-G5}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PorjectG5)
+```
