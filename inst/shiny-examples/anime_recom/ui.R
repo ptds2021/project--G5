@@ -20,7 +20,7 @@ header <- dashboardHeader(title = "Demo")
 sidebar <- dashboardSidebar(
     sidebarMenu(
             menuItem("Newcommer", tabName = "newcommer_tab"),
-            menuItem("Second", tabName = "experienced_tab")
+            menuItem("User ", tabName = "experienced_users_tab")
     )
 )
 
@@ -30,12 +30,12 @@ body <- dashboardBody(
         tabItem(tabName = "newcommer_tab",
                 box(column(4,
                            numericInput(inputId = "age",
-                             label = "Your age",
+                             label = "What is your age?",
                              c(1:100),
                              value = 20)),
                     column(4,
                            selectInput(inputId = "gender",
-                            label =  "Gender of interest",
+                            label =  "What gender of anime you would want to see?",
                             choices = c("Action",
                               "Comedy",
                               "Shounen",
@@ -49,11 +49,10 @@ body <- dashboardBody(
                               "Fantasy",
                               "Sports"),
                             multiple = TRUE,
-                            selected = "Sports",
-                            selectize = TRUE)),
+                            selected = "Sports")),
                     column(4,
                            sliderInput(inputId = "freetime",
-                            label = "Time available in minutes",
+                            label = "How much time do you have in front of you?",
                             min = 1,
                             max = 180,
                             value = 30,
@@ -65,10 +64,31 @@ body <- dashboardBody(
         ),
 
         # Second tab content
-        tabItem(tabName = "experienced_tab",
-                column(3, box()),
-                column(9,box())
-        )
+        tabItem(tabName = "experienced_users_tab",
+                column(3,
+
+                       box(
+                           fluidRow(column(
+                               12,
+                               numericInput(
+                                   inputId = "number_anime",
+                                   label = "Select number of animes",
+                                   max = 10,
+                                   min = 1,
+                                   value = 2
+                               )
+                           )),
+                           fluidRow(column(8,
+                                           uiOutput(
+                                               'anime_exp_users_select'
+                                           )),
+                                    column(4,
+                                           uiOutput(
+                                               'anime_exp_users_score'
+                                           ))),
+                           width = "100%"
+                       ),),
+                column(9, box()))
     )
 
 )
