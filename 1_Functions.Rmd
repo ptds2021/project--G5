@@ -100,16 +100,18 @@ thebestfit(anime, 15, c('Action','Comedy'))
 ##third try with age, gender and freetime 
 thebestfit<-function(anime, age, gender, freetime){
 
-  if (age <13){
-    newdata<-filter(anime, Rating=='G - All Ages')
+  if (age < 13){
+    newdata <- anime %>%
+      filter(Rating == 'G - All Ages')
+  }else if (age >= 13 & age <= 16){
+    newdata <- anime %>%
+      filter(Rating == 'G - All Ages' | Rating == 'PG-13 - Teens 13 or older')
+  }else if (age > 16 & age < 18) {
+    newdata <- anime %>%
+      filter(Rating == 'G - All Ages' | Rating == 'R+ - Mild Nudity' |  Rating == 'R - 17+ (violence & profanity)')
+  }else {
+    newdata <- anime 
   }
-    if (age >= 13){
-      newdata<-filter(anime, Rating=='G - All Ages' | Rating== 'PG-13 - Teens 13 or older')
-    }
-      if (age > 16) {
-        newdata<-filter(anime, Rating=='G - All Ages' | Rating== 'R+ - Mild Nudity' |  Rating== 'R - 17+ (violence & profanity)'
-)
-      }
   
     finaldata<-filter(newdata, str_detect(newdata$Genders, gender))
 
@@ -131,5 +133,5 @@ thebestfit<-function(anime, age, gender, freetime){
   print(finaldata)
 }
 
-thebestfit(anime, 15, c('Action','Comedy'), "more than 2h")
+newcommer_recom(anime, 17, c('Action','Comedy'), "more than 2h")
 ```
