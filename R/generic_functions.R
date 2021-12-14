@@ -111,7 +111,8 @@ anime_finder <- function() {
   library(cluster)
   library(ProjectG5)
 
-  anime <- read.csv(here::here("data/anime_tidy.csv"))
+  anime <- read.csv(here::here("inst/extdata/anime_tidy.csv"))
+  anime_with_ratings <- read.csv(here::here("inst/extdata/anime_with_ratings.csv"))
 
   Gender_list <-
     unique(as.vector(str_split(str_c(anime$Genders, collapse = ", "), ", ")[[1]]))
