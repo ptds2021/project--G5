@@ -10,7 +10,7 @@ library(readr)
 library(dplyr)
 library(tidyverse)
 anime <- read_csv(
-  here::here("data/anime.csv"),
+  here::here("original_data/anime.csv"),
   col_types = cols(
     `Japanese name` = col_skip(),
     `Score-10` = col_skip(),
@@ -30,6 +30,10 @@ anime <- read_csv(
 #cleaning data: no NA nor Unknown and order by ranking
 anime <- anime %>%
   rename(english_name = 'English name')%>%
+  mutate(Name = case_when(english_name == 'Unknown' ~ Name,
+                          TRUE ~ english_name))%>%
+  rename(item_id = MAL_ID)%>%
+  mutate(item_id = sprintf("ID%s", item_id))%>%
   filter(Score != 'Unknown') %>%
   filter(Ranked != 'Unknown') %>%
   filter(Rating != 'Unknown') %>%
@@ -88,4 +92,49 @@ anime$Duration_C <-
                "more than 1h",
                "more than 2h")
   )
+
+write.csv(anime, here::here("data/anime_tidy.csv"))
+```
+
+
+
+```{r}
+#import dataset
+
+#This was kept locally and not added to the package since the document contains 107 milion lines ans is after this step not used anymore into the application
+anime_list <- read.csv(here::here("original_data/animelist.csv"))
+```
+
+```{r}
+#getting list of people with more than 1500 ratings
+ratings_per_user <- anime_list %>%
+  group_by(user_id) %>% 
+  tally()%>%
+  filter(n > 4000)
+
+ggplot(ratings_per_user)+
+  geom_bar(aes(n))
+
+
+users_kept <- ratings_per_user$user_id
+```
+
+```{r}
+#using the list to create a table containing the ratings and the anime infos
+ratings_kept <- anime_list %>%
+  filter(user_id %in% users_kept & rating > 0)%>%
+  rename(item_id = anime_id)%>%
+  mutate(item_id = sprintf("ID%s", item_id))
+
+anime_with_ratings <- left_join(anime, ratings_kept, by= "item_id") %>%
+  select(item_id, user_id, Name, english_name, Episodes, Duration, rating)
+
+write.csv(anime_with_ratings, here::here("data/anime_with_ratings.csv"))
+
+
+#check for null ratings since we want to avoid them
+anime_with_ratings_null <- anime_with_ratings %>%
+  filter(is.na(rating))
+
+anime_without_ratings_vc <- anime_with_ratings_null$item_id
 ```
