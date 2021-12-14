@@ -93,7 +93,9 @@ anime$Duration_C <-
                "more than 2h")
   )
 
-write.csv(anime, here::here("data/anime_tidy.csv"))
+save(anime, here::here("data/anime_tidy.RData"))
+
+save()
 ```
 
 
@@ -129,7 +131,7 @@ ratings_kept <- anime_list %>%
 anime_with_ratings <- left_join(anime, ratings_kept, by= "item_id") %>%
   select(item_id, user_id, Name, english_name, Episodes, Duration, rating)
 
-write.csv(anime_with_ratings, here::here("data/anime_with_ratings.csv"))
+save(anime_with_ratings, here::here("data/anime_with_ratings.RData"))
 
 
 #check for null ratings since we want to avoid them
