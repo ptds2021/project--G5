@@ -12,6 +12,12 @@ library(shiny)
 library(shinydashboard)
 library(DT)
 
+anime <- read.csv(here::here("data/anime_tidy.csv"))
+
+Gender_list <-
+    unique(as.vector(str_split(str_c(anime$Genders, collapse = ", "), ", ")[[1]]))
+
+
 # Define UI for application that draws a histogram
 
 
@@ -20,13 +26,16 @@ header <- dashboardHeader(title = "Demo")
 sidebar <- dashboardSidebar(
     sidebarMenu(
             menuItem("Newcommer", tabName = "newcommer_tab"),
-            menuItem("User ", tabName = "experienced_users_tab")
+            menuItem("User based recommendation", tabName = "experienced_u_tab"),
+            menuItem("Item based recommendation", tabName = "experienced_i_tab")
     )
 )
 
 body <- dashboardBody(
     tabItems(
-        # First tab content
+
+
+        # Newcommer tab
         tabItem(tabName = "newcommer_tab",
                 box(column(4,
                            numericInput(inputId = "age",
@@ -36,18 +45,7 @@ body <- dashboardBody(
                     column(4,
                            selectInput(inputId = "gender",
                             label =  "What gender of anime you would want to see?",
-                            choices = c("Action",
-                              "Comedy",
-                              "Shounen",
-                              "Thriller",
-                              "Mystery",
-                              "Police",
-                              "Supernatural",
-                              "Psychological",
-                              "Military",
-                              "Super Power",
-                              "Fantasy",
-                              "Sports"),
+                            choices = Gender_list,
                             multiple = TRUE,
                             selected = "Sports")),
                     column(4,
@@ -63,32 +61,53 @@ body <- dashboardBody(
 
         ),
 
-        # Second tab content
-        tabItem(tabName = "experienced_users_tab",
-                column(3,
 
+
+
+        # User based Recommendation tab
+        tabItem(tabName = "experienced_u_tab",
+                column(4,
                        box(
-                           fluidRow(column(
-                               12,
-                               numericInput(
-                                   inputId = "number_anime",
-                                   label = "Select number of animes",
-                                   max = 10,
-                                   min = 1,
-                                   value = 2
-                               )
-                           )),
-                           fluidRow(column(8,
-                                           uiOutput(
-                                               'anime_exp_users_select'
-                                           )),
-                                    column(4,
-                                           uiOutput(
-                                               'anime_exp_users_score'
-                                           ))),
+                           selectizeInput(
+                                      inputId = "viewed_u_tab",
+                                      label = "Anime selection",
+                                      choices = NULL ,
+                                      multiple = TRUE),
+                           uiOutput("anime_exp_users_score"),
+
+
+
                            width = "100%"
-                       ),),
-                column(9, box()))
+                        )
+                ),
+                column(8,
+                       box(width = "100%",
+                           tags$h3("User Based recommendation"),
+                           DT::DTOutput("recom_user_based"))
+                       ),
+
+        ),
+        tabItem(tabName = "experienced_i_tab",
+                column(4,
+                       box(
+                           selectizeInput(
+                               inputId = "viewed_i_tab",
+                               label = "Select one anime",
+                               choices = NULL ,
+                               multiple = FALSE),
+
+
+
+                           width = "100%"
+                       )
+                ),
+                column(8,
+                       box(width = "100%",
+                           tags$h3("Item Based recommendation"),
+                           DT::DTOutput("recom_item_based"))
+                ),
+
+        )
     )
 
 )
@@ -98,4 +117,3 @@ ui <- dashboardPage(header,
                     body)
 shinyUI(ui)
 
-unique(anime$Duration)

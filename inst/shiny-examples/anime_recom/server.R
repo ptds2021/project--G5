@@ -8,14 +8,15 @@
 #
 
 library(shiny)
+library(cluster)
+anime <- read.csv(here::here("data/anime_tidy.csv"))
+anime_with_ratings <- read.csv(here::here("data/anime_with_ratings.csv"))
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output, session) {
-    anime <- anime
+shinyServer( function(input, output, session) {
 
 
-    updateSelectizeInput(session, 'viewed_1', choices = anime$Name, server = TRUE)
-
+    #Newcommer tab
     table_newcommer_temp <- reactive({
         newcommer_recom(anime, input$age, input$gender, input$freetime)
     })
@@ -24,43 +25,107 @@ shinyServer(function(input, output, session) {
         datatable(table_newcommer_temp())
     })
 
-    output$anime_exp_users_select <- renderUI({
-        count=1
-        box_list <- list()
-        for(count in 1:input$number_anime){
-            box_list[[count]] <- selectizeInput(
-                                      inputId = sprintf("viewed_%s",
-                                                        count),
-                                      label = sprintf("Anime %s",
-                                                      count),
-                                      choices = anime$Name ,
-                                      multiple = FALSE)
-            count = count+1
-        }
-        tagList(box_list)
+
+
+
+    #User based recommendation tab
+    updateSelectizeInput(session, 'viewed_u_tab',
+                         selected = "", choices = anime$Name, server = TRUE)
+
+    nb_of_anime <- reactive({
+        selectize_count(input$viewed_u_tab)
     })
+    anime_names <- reactive({
+        selectize_names(input$viewed_u_tab)
+    })
+
     output$anime_exp_users_score <- renderUI({
-        count=1
-        box_list <- list()
-        for(count in 1:input$number_anime){
-            box_list[[count]] <- numericInput(
-                inputId = sprintf("weight_viewed_%s",
-                                  count),
-                label = sprintf("Your score: 1 to 10",
-                                count),
-                min = 1,
-                max = 10,
-                value = 5,
-                step = 0.5)
-            count = count+1
-        }
-        tagList(box_list)
+        create_numeric_input(anime_names(), nb_of_anime())
     })
+
+    all_grades <-reactive({
+        score_recovery(nb_of_anime(), input)
+    })
+
+    anime_selected_table<- reactive({
+        temp_tibble <- tibble(Name = anime_names(), rating = all_grades())
+
+        anime_selected <- left_join(anime, temp_tibble, by = c("Name" = "Name")) %>%
+            filter(Name %in% anime_names())%>%
+            mutate(user_id = 999999999)
+    })
+
+
+    user_item_u <- reactive({
+        item = user_item_matrix(data = anime_with_ratings, adding_row = TRUE, row_data = anime_selected_table())
+    })
+
+    user_recommendation = reactive({
+        user_based_recom(999999999, user_item_u() , anime_with_ratings, 5, 1, 10)
+
+    })
+
+
+    output$recom_user_based <- DT::renderDT(user_recommendation())
+
+
+
+    #Item based recommendation tab
+    updateSelectizeInput(session, 'viewed_i_tab',
+                         selected = "", choices = anime$Name, server = TRUE)
+
+
+    user_item_i <-reactive({
+        item <- user_item_matrix()
+    })
+
+    item_recommendation_otp = reactive({
+         item_recommendation(input$viewed_i_tab, user_item_i(), 5, anime)
+
+    })
+
+    output$recom_item_based <- DT::renderDT(item_recommendation_otp())
+
+
+
 
 })
 
 
 
 
-?selectizeInput
+
+
+
+
+
+
+ dissimilarity_matrix <- function(){
+        anime_fctr <- anime  %>%
+            mutate(
+                Popularity_fct = Popularity / max(anime$Popularity)
+            ) %>%
+            mutate(
+                Genders = as.factor(Genders),
+                Type = as.factor(Type),
+                Episodes = as.factor(Episodes),
+                Studios = as.factor(Studios),
+                Rating = as.factor(Rating),
+                Popularity = as.factor(Popularity)
+            )
+
+        anime_distance = anime_fctr[,c("Genders", "Type", "Studios", "Rating", "Popularity_fct")]
+
+
+        dissimilarity <- daisy(anime_distance, metric = "gower")
+
+        dissimilarity_matrix <- as.matrix(dissimilarity)
+
+        row.names(dissimilarity_matrix) <-  anime_fctr$item_id
+        colnames(dissimilarity_matrix) <- anime_fctr$item_id
+
+        return(dissimilarity_matrix)
+    }
+
+
 
