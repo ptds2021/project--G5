@@ -1,11 +1,11 @@
-#'@title Filter the enime list depdnding on simple data
+#'@title Filter the anime list depending on simple data
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
 #'@param anime data containing the anime list
 #'@param age age given by the person
-#'@param gender gender of interest from the anime data
-#'@param freetime freetime that the person has to use for the anime
+#'@param gender gender (type) of interest from the anime data
+#'@param freetime free time that the person has to use for the anime
 #'
 #'@return Return a filtered table with the anime depending on the inputs
 #'
@@ -42,7 +42,7 @@ newcommer_recom <- function(anime, age, gender, freetime){
     return(finaldata)
 }
 
-#'@title Compute the cosinue similarity between two objects A and B
+#'@title Compute the cosine similarity between two objects A and B
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
