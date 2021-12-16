@@ -2,7 +2,7 @@
 % Please edit documentation in R/anime_functions.R
 \name{user_based_recom}
 \alias{user_based_recom}
-\title{Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched}
+\title{Similarity between other users to have a list of anime that the user have not seen yet}
 \usage{
 user_based_recom(
   userid = 999999999,
@@ -14,7 +14,7 @@ user_based_recom(
 )
 }
 \arguments{
-\item{userid}{user id, set to 999999999 so that there normally is no conflict with other Id's}
+\item{userid}{user id, set to 999999999 so that there is no conflict with other Id's}
 
 \item{user_item_matrix}{matrix created by the function `user_item_matrix`}
 
@@ -30,7 +30,7 @@ user_based_recom(
 Return a table composed of `n_recommendation` that the user have not seen yet
 }
 \description{
-Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched
+Use the user item matrix to search for similar users in order to get the anime they graded the best and that we have not watched
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

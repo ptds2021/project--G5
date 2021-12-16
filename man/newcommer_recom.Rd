@@ -2,24 +2,24 @@
 % Please edit documentation in R/anime_functions.R
 \name{newcommer_recom}
 \alias{newcommer_recom}
-\title{Filter the anime list depending on simple data}
+\title{Filter anime according to preferences}
 \usage{
 newcommer_recom(anime, age, gender, freetime)
 }
 \arguments{
-\item{anime}{data containing the anime list}
+\item{anime}{data containing the list of anime with the variables being description for each anime}
 
 \item{age}{age given by the person}
 
-\item{gender}{gender (type) of interest from the anime data}
+\item{gender}{theme of the anime. For instance if you like action anime, put "action"}
 
-\item{freetime}{free time that the person has to use for the anime}
+\item{freetime}{free time that the person has to use in order to watch the anime}
 }
 \value{
 Return a filtered table with the anime depending on the inputs
 }
 \description{
-Filter the anime list depending on simple data
+Filter the anime list depending on different variables. These variables must be included in the data set.
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

@@ -2,7 +2,7 @@
 % Please edit documentation in R/anime_functions.R
 \name{user_item_matrix}
 \alias{user_item_matrix}
-\title{Create the user_item matrix from the given data. We use `adding_row = TRUE` for the user based recommendation to be able to add the user selected data to the table}
+\title{Score per anime per user}
 \usage{
 user_item_matrix(
   data = anime_with_ratings,
@@ -18,7 +18,7 @@ user_item_matrix(
 \item{row_data}{table created by the function `user_data()`}
 }
 \value{
-Return a matrix where x axis include the item_id and the y axis include the user_id, so each line is the score per item per user
+Return a matrix where the x axis include the item_id and the y axis include the user_id. Each line is the score per item per user
 }
 \description{
 Create the user_item matrix from the given data. We use `adding_row = TRUE` for the user based recommendation to be able to add the user selected data to the table

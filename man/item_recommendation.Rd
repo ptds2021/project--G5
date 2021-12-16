@@ -2,24 +2,29 @@
 % Please edit documentation in R/anime_functions.R
 \name{item_recommendation}
 \alias{item_recommendation}
-\title{Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched}
+\title{Similarity between anime}
 \usage{
-item_recommendation(selected_item_name, rating_matrix, n_recommendation, data)
+item_recommendation(
+  selected_item_name,
+  user_item_matrix,
+  n_recommendation,
+  data
+)
 }
 \arguments{
-\item{n_recommendation}{number of recommendations wanted}
+\item{selected_item_name}{selection of the user in the Shiny App}
 
-\item{viewed}{user id, set to 999999999 so that there normally is no conflict with other Id's}
+\item{user_item_matrix}{matrix created by the function `user_item_matrix`}
 
-\item{dissimularity}{matrix created by the function ...}
+\item{n_recommendation}{number of recommendation wanted by the user}
 
-\item{all_anim}{table of ratings similar to the one we kept}
+\item{data}{table of all anime}
 }
 \value{
 Return a table composed of `n_recommendation` that the user have not seen yet
 }
 \description{
-Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched
+Use the user item matrix to search for similar anime
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
