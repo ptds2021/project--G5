@@ -1,18 +1,33 @@
-#'@title Filter the enime list depdnding on simple data
+#'@title Filter anime according to preferences
+#'
+#'@description Filter the anime list depending on different variables. These variables must be included in the data set.
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
-#'@param anime data containing the anime list
+#'@param anime data containing the list of anime with the variables being description for each anime
 #'@param age age given by the person
-#'@param gender gender of interest from the anime data
-#'@param freetime freetime that the person has to use for the anime
+#'@param gender theme of the anime. For instance if you like action anime, put "action"
+#'@param freetime free time that the person has to use in order to watch the anime
 #'
 #'@return Return a filtered table with the anime depending on the inputs
-#'
 #'
 #'@export
 
 newcommer_recom <- function(anime, age, gender, freetime){
+  # Controls
+  if (!is.numeric(age)) {
+    stop("Argument age is not valid. It must be a number.")
+  }
+  if (age <= 0) {
+    stop("Argument age is not valid. It must be positive.")
+  }
+  if (!is.integer(freetime)) {
+    stop("Argument freetime is not valid. It must be a number.")
+  }
+  if (freetime <= 0) {
+    stop("Argument freetime is not valid. It must be positive.")
+  }
+
   if  (age < 13) {
     newdata <- anime %>%
       filter(Rating == 'G - All Ages')
@@ -42,7 +57,7 @@ newcommer_recom <- function(anime, age, gender, freetime){
     return(finaldata)
 }
 
-#'@title Compute the cosinue similarity between two objects A and B
+#'@title Compute the cosine similarity between two objects A and B
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
@@ -50,7 +65,6 @@ newcommer_recom <- function(anime, age, gender, freetime){
 #'@param B second object
 #'
 #'@return Return the cosine similarity value
-#'
 #'
 #'@export
 
@@ -64,11 +78,13 @@ cos_similarity = function(A,B){
 
 
 
-#'@title Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched
+#'@title Similarity between other users to have a list of anime that the user have not seen yet
+#'
+#'@description Use the user item matrix to search for similar users in order to get the anime they graded the best and that we have not watched
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
-#'@param userid user id, set to 999999999 so that there normally is no conflict with other Id's
+#'@param userid user id, set to 999999999 so that there is no conflict with other Id's
 #'@param user_item_matrix matrix created by the function `user_item_matrix`
 #'@param ratings_matrix table of ratings similar to the one we kept
 #'@param n_recommendation number of recommendations wanted
@@ -88,6 +104,13 @@ user_based_recom = function(userid = 999999999 ,
                             threshold = 1,
                             nearest_neighbors = 10) {
 
+  # Controls
+  if (!is.numeric(userid)) {
+    stop("Argument userid is not valid. It must be a number.")
+  }
+  if (!is.integer(n_recommendation)) {
+    stop("Argument n_recommendation is not valid. It must be a number.")
+  }
 
   user_index = which(rownames(user_item_matrix) == userid)
 
@@ -121,7 +144,9 @@ user_based_recom = function(userid = 999999999 ,
 
 }
 
-#'@title Create the user_item matrix from the given data. We use `adding_row = TRUE` for the user based recommendation to be able to add the user selected data to the table
+#'@title Score per anime per user
+#'
+#'@description Create the user_item matrix from the given data. We use `adding_row = TRUE` for the user based recommendation to be able to add the user selected data to the table
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
@@ -129,12 +154,12 @@ user_based_recom = function(userid = 999999999 ,
 #'@param adding_row Variable that is either TRUE if you want the matrix for the user-based recommendation or FALSE if you want the matrix for the item-based recommendation
 #'@param row_data table created by the function `user_data()`
 #'
-#'@return Return a matrix where x axis include the item_id and the y axis include the user_id, so each line is the score per item per user
+#'@return Return a matrix where the x axis include the item_id and the y axis include the user_id. Each line is the score per item per user
 #'
 #'
 #'@export
 
-
+typeof(anime_with_ratings)
 user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_data = NULL){
 
   if(adding_row == TRUE){
@@ -173,14 +198,16 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 
 
 
-#'@title Use the user item matrix to search for similar users and get the anime they graded the best that we have not watched
+#'@title Similarity between anime
+#'
+#'@description Use the user item matrix to search for similar anime
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
-#'@param viewed user id, set to 999999999 so that there normally is no conflict with other Id's
-#'@param dissimularity matrix created by the function ...
-#'@param all_anim table of ratings similar to the one we kept
-#'@param n_recommendation number of recommendations wanted
+#'@param selected_item_name selection of the user in the Shiny App
+#'@param user_item_matrix matrix created by the function `user_item_matrix`
+#'@param n_recommendation number of recommendation wanted by the user
+#'@param data table of all anime
 #'
 #'@return Return a table composed of `n_recommendation` that the user have not seen yet
 #'
@@ -188,16 +215,21 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 #'@export
 
 
-item_recommendation = function(selected_item_name, rating_matrix, n_recommendation, data){
+item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, data){
+
+  # Controls
+  if (!is.integer(n_recommendation)) {
+    stop("Argument n_recommendation is not valid. It must be a number.")
+  }
 
   item_picked <- data %>% filter(Name == selected_item_name)
 
   selected_item_id <- item_picked$item_id
 
-  item_index = which(colnames(rating_matrix) == selected_item_id)
+  item_index = which(colnames(user_item_matrix) == selected_item_id)
 
-  similarity = apply(rating_matrix, 2, FUN = function(y)
-    ProjectG5::cos_similarity(rating_matrix[,item_index], y))
+  similarity = apply(user_item_matrix, 2, FUN = function(y)
+    ProjectG5::cos_similarity(user_item_matrix[,item_index], y))
 
   recommendations = tibble(item_id = names(similarity),
                            similarity = similarity) %>%
