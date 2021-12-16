@@ -38,6 +38,7 @@ selectize_names <- function(id){
 #'@param max_user maximum value of the numericInputs
 #'@param placeholder placeholder value in the numericInput
 #'@param wanted_step step of the value in the numericInput
+#'@param id id to add when we want to use the functions more than one time in the app
 #'
 #'@return return a vector containing the numbers the user selected from 1:10
 #'
@@ -75,6 +76,7 @@ create_numeric_input <- function(selectednames,
 #'
 #'@param selectedcounts amount of variable selected in the selectize input
 #'@param input input id from shiny
+#'@param id id to add when we want to use the functions more than one time in the app
 #'
 #'@return return a vector containing the numbers the user selected from 1:10
 #'
