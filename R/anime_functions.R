@@ -108,7 +108,7 @@ user_based_recom = function(userid = 999999999 ,
   if (!is.numeric(userid)) {
     stop("Argument userid is not valid. It must be a number.")
   }
-  if (!is.integer(n_recommendation)) {
+  if (!is.numeric(n_recommendation)) {
     stop("Argument n_recommendation is not valid. It must be a number.")
   }
 
@@ -159,7 +159,7 @@ user_based_recom = function(userid = 999999999 ,
 #'
 #'@export
 
-typeof(anime_with_ratings)
+
 user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_data = NULL){
 
   if(adding_row == TRUE){
@@ -218,7 +218,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, data){
 
   # Controls
-  if (!is.integer(n_recommendation)) {
+  if (!is.numeric(n_recommendation)) {
     stop("Argument n_recommendation is not valid. It must be a number.")
   }
 
