@@ -66,7 +66,7 @@ create_numeric_input <- function(selectednames,
   if (min_user <= 0) {
     stop("Argument min_user is not valid. It must be positive.")
   }
-  if (!is.integer(max_user)) {
+  if (!is.numeric(max_user)) {
     stop("Argument max_user is not valid. It must be a number.")
   }
   if (max_user <= 0) {
