@@ -51,12 +51,12 @@ create_numeric_input <- function(selectednames,
                                  max_user = 10,
                                  placeholder = 5,
                                  wanted_step = 0.5,
-                                 id = "weight"){
+                                 id){
   count = 1
   box_list <- list()
   for (count in 1:selectedcounts) {
     box_list[[count]] <- numericInput(
-      inputId = sprintf("%s_%s",
+      inputId = sprintf("%s_%d",
                         id,
                         count),
       label = sprintf("%s Score",selectednames[count]),
@@ -84,11 +84,11 @@ create_numeric_input <- function(selectednames,
 
 
 
-score_recovery <- function(selectedcounts, input, id = "weight"){
+score_recovery <- function(selectedcounts, input, id){
   FD=1
   weight_list <- vector()
   for(FD in 1:selectedcounts){
-    weight_list[FD] <- input[[sprintf("%s_%s", id, FD)]]
+    weight_list[FD] <- input[[sprintf("%s_%d", id, FD)]]
     FD = FD+1
   }
   weight_list
