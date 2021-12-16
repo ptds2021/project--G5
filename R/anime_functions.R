@@ -14,6 +14,20 @@
 #'@export
 
 newcommer_recom <- function(anime, age, gender, freetime){
+  # Controls
+  if (!is.numeric(age)) {
+    stop("Argument age is not valid. It must be a number.")
+  }
+  if (age <= 0) {
+    stop("Argument age is not valid. It must be positive.")
+  }
+  if (!is.integer(freetime)) {
+    stop("Argument freetime is not valid. It must be a number.")
+  }
+  if (freetime <= 0) {
+    stop("Argument freetime is not valid. It must be positive.")
+  }
+
   if  (age < 13) {
     newdata <- anime %>%
       filter(Rating == 'G - All Ages')
@@ -90,6 +104,13 @@ user_based_recom = function(userid = 999999999 ,
                             threshold = 1,
                             nearest_neighbors = 10) {
 
+  # Controls
+  if (!is.numeric(userid)) {
+    stop("Argument userid is not valid. It must be a number.")
+  }
+  if (!is.integer(n_recommendation)) {
+    stop("Argument n_recommendation is not valid. It must be a number.")
+  }
 
   user_index = which(rownames(user_item_matrix) == userid)
 
@@ -138,7 +159,7 @@ user_based_recom = function(userid = 999999999 ,
 #'
 #'@export
 
-
+typeof(anime_with_ratings)
 user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_data = NULL){
 
   if(adding_row == TRUE){
@@ -195,6 +216,11 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 
 
 item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, data){
+
+  # Controls
+  if (!is.integer(n_recommendation)) {
+    stop("Argument n_recommendation is not valid. It must be a number.")
+  }
 
   item_picked <- data %>% filter(Name == selected_item_name)
 
