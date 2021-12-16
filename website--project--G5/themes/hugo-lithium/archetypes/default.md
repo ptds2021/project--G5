@@ -1,4 +1,4 @@
 ---
-title: ''
+title: 'Anime Recommendation'
 date: ''
 ---

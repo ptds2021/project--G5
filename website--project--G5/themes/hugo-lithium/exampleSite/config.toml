@@ -7,13 +7,13 @@ disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
 
 [permalinks]
-    post = "/:year/:month/:day/:slug/"
+    post = "/:title/"
 
 [[menu.main]]
-    name = "About"
+    name = "About us"
     url = "/about/"
 [[menu.main]]
-    name = "GitHub"
+    name = "Check our GitHub"
     url = "https://github.com/rstudio/blogdown"
 [[menu.main]]
     name = "Twitter"

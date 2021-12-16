@@ -1,6 +1,15 @@
 ---
 date: "2016-05-05T21:48:51-07:00"
-title: About
+title: About us
 ---
 
-This is a "hello world" example website for the [**blogdown**](https://github.com/rstudio/blogdown) package. The theme was forked from [@jrutheiser/hugo-lithium-theme](https://github.com/jrutheiser/hugo-lithium-theme) and modified by [Yihui Xie](https://github.com/yihui/hugo-lithium).
+Hi there ! We are five students from the University of Lausanne, studying for a Master's degree in Management.
+
+We have created this website to show you an application we have created about anime. 
+
+Here are our names, and our emails:
+- Vania Rodrigues Telo Ramos - <vania.rodriguesteloramos@unil.ch>
+- Meri Likoska - <meri.likoska@unil.ch>
+- Marie Bellier - <marie.bellier@unil.ch>
+- Massimo Finini - <massimo.finini@unil.ch>
+- Xavier Renger - <xavier.renger@unil.ch>
