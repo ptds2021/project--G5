@@ -14,6 +14,7 @@
 #'@import tidyverse
 #'@import tibble
 #'@import stringr
+#'@import semantic.dashboard
 #'
 #'
 #'@export
@@ -27,6 +28,7 @@ anime_finder <- function() {
   library(ProjectG5)
   library(tibble)
   library(stringr)
+  library(semantic.dashboard)
 
   anime <- tibble::tibble(ProjectG5::anime)
 
@@ -45,7 +47,7 @@ anime_finder <- function() {
 
   # Define UI for application that draws a histogram
 
-  header <- shinydashboard::dashboardHeader(title = "Demo")
+  header <- shinydashboard::dashboardHeader(title = "Anime Recommendation")
 
   sidebar <- shinydashboard::dashboardSidebar(
     shinydashboard::sidebarMenu(
@@ -61,10 +63,12 @@ anime_finder <- function() {
   )
 
   body <- shinydashboard::dashboardBody(
+
     shinydashboard::tabItems(
       #Homepage Tab
 
       shinydashboard::tabItem(tabName = "homepage_tab",
+
               shiny::tags$h1("Welcome to the anime recommendation Application"),
               shiny::tags$h3("This application was done for a project during
                       the classProgramming tools in Data Science at the
@@ -84,12 +88,16 @@ anime_finder <- function() {
                       The second one will give you recommendations according
                       to the scores you have given to several anime selected
                       beforehand.")
+
       ),
 
 
       # Newcommer tab
+
       shinydashboard::tabItem(tabName = "newcommer_tab",
-            shinydashboard::box(shiny::column(4,
+
+            shinydashboard::box(background='maroon',
+                                shiny::column(4,
                          shiny::numericInput(inputId = "age",
                                       label = "What is your age?",
                                       c(1:100),
@@ -102,6 +110,9 @@ anime_finder <- function() {
                                      multiple = TRUE,
                                      selected = "Sports")),
                   shiny::column(4,
+                                tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: black;
+                                border-top: 1px solid black ;
+                                                  border-bottom: 1px solid black ;}")),
                          shiny::sliderInput(inputId = "freetime",
                                      label = "How much time do you have
                                      in front of you (in minutes) ?",
@@ -122,6 +133,7 @@ anime_finder <- function() {
       shinydashboard::tabItem(tabName = "experienced_u_tab",
               shiny::column(4,
                      shinydashboard::box(
+                       background='maroon',
                        shiny::column(9,
                          shiny::selectizeInput(
                            inputId = "viewed_u_tab",
@@ -138,7 +150,7 @@ anime_finder <- function() {
                                     label = "Generate score boxes"),
                        width = "100%"
                      ),
-                     shinydashboard::box(
+                     shinydashboard::box(background='purple',
                        shiny::uiOutput("anime_exp_users_score"),
                        shiny::actionButton(inputId = "run_1",
                                     label = "Run"),
@@ -158,6 +170,7 @@ anime_finder <- function() {
       shinydashboard::tabItem(tabName = "experienced_i_tab",
               shiny::column(4,
                      shinydashboard::box(
+                       background='maroon',
                        shiny::column(9,
                          shiny::selectizeInput(
                            inputId = "viewed_i_tab",
@@ -170,7 +183,8 @@ anime_finder <- function() {
                        shiny::column(3,
                             shiny::selectInput(inputId = "n_recomm_2",
                                                label = "N° recom",
-                                               choices = c(5,10,15,20,25))
+                                               choices = c( 5 , 10 , 15 , 20 , 25 ),
+                         )
                        ),
                       width = "100%"
                      )
@@ -186,7 +200,8 @@ anime_finder <- function() {
 
   )
 
-  ui <- shinydashboard::dashboardPage(header,
+  ui <- shinydashboard::dashboardPage(skin= 'purple',
+                                      header,
                                       sidebar,
                                       body)
 
@@ -288,4 +303,5 @@ anime_finder <- function() {
   shiny::shinyApp(ui = ui, server = server)
 
 }
+
 
