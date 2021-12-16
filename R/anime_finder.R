@@ -96,7 +96,7 @@ anime_finder <- function() {
 
       shinydashboard::tabItem(tabName = "newcommer_tab",
 
-            shinydashboard::box(background='maroon',
+            shinydashboard::box(background='purple',
                                 shiny::column(4,
                          shiny::numericInput(inputId = "age",
                                       label = "What is your age?",
@@ -133,7 +133,7 @@ anime_finder <- function() {
       shinydashboard::tabItem(tabName = "experienced_u_tab",
               shiny::column(4,
                      shinydashboard::box(
-                       background='maroon',
+                       background='purple',
                        shiny::column(9,
                          shiny::selectizeInput(
                            inputId = "viewed_u_tab",
@@ -170,7 +170,7 @@ anime_finder <- function() {
       shinydashboard::tabItem(tabName = "experienced_i_tab",
               shiny::column(4,
                      shinydashboard::box(
-                       background='maroon',
+                       background='purple',
                        shiny::column(9,
                          shiny::selectizeInput(
                            inputId = "viewed_i_tab",
