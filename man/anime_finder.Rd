@@ -10,7 +10,7 @@ anime_finder()
 Launch the shiny application to give you the ability to search for animes
 }
 \description{
-Application Demo
+Function launching the application again
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
