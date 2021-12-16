@@ -4,6 +4,14 @@
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
 #'@return Launch the shiny application to give you the ability to search for animes
+#'
+#'@import dyplr
+#'@import tydiverse
+#'@import shiny
+#'@import shinydashboard
+#'@import DT
+#'
+#'
 #'@export
 
 anime_finder <- function() {
@@ -12,7 +20,6 @@ anime_finder <- function() {
   library(shiny)
   library(shinydashboard)
   library(DT)
-  library(cluster)
   library(ProjectG5)
 
   anime <- tibble(ProjectG5::anime)
@@ -31,8 +38,8 @@ anime_finder <- function() {
   sidebar <- dashboardSidebar(
     sidebarMenu(
       menuItem("Newcommer", tabName = "newcommer_tab"),
-      menuItem("User based recommendation", tabName = "experienced_u_tab"),
-      menuItem("Item based recommendation", tabName = "experienced_i_tab")
+      menuItem("Item based recommendation", tabName = "experienced_i_tab"),
+      menuItem("User based recommendation", tabName = "experienced_u_tab")
     )
   )
 
@@ -49,13 +56,13 @@ anime_finder <- function() {
                                       value = 20)),
                   column(4,
                          selectInput(inputId = "gender",
-                                     label =  "What gender of anime you would want to see?",
+                                     label =  "What gender of anime would you want to see?",
                                      choices = Gender_list,
                                      multiple = TRUE,
                                      selected = "Sports")),
                   column(4,
                          sliderInput(inputId = "freetime",
-                                     label = "How much time do you have in front of you?",
+                                     label = "How much time do you have in front of you (in minutes) ?",
                                      min = 1,
                                      max = 180,
                                      value = 30,
@@ -73,15 +80,23 @@ anime_finder <- function() {
       tabItem(tabName = "experienced_u_tab",
               column(4,
                      box(
-                       selectizeInput(
-                         inputId = "viewed_u_tab",
-                         label = "Anime selection",
-                         choices = NULL ,
-                         multiple = TRUE),
+                       column(8,
+                         selectizeInput(
+                           inputId = "viewed_u_tab",
+                           label = "Anime selection",
+                           choices = NULL ,
+                           multiple = TRUE),
+                       ),
+                       column(4,
+                              actionButton(inputId = "submit_1",
+                                           label = "Generate score boxes")
+                       ),
+                       width = "100%"
+                     ),
+                     box(
                        uiOutput("anime_exp_users_score"),
-
-
-
+                       actionButton(inputId = "run_1",
+                                    label = "Run"),
                        width = "100%"
                      )
               ),
@@ -92,6 +107,9 @@ anime_finder <- function() {
               ),
 
       ),
+
+
+      # Item based Recommendation tab
       tabItem(tabName = "experienced_i_tab",
               column(4,
                      box(
@@ -100,6 +118,8 @@ anime_finder <- function() {
                          label = "Select one anime",
                          choices = NULL ,
                          multiple = FALSE),
+                       actionButton(inputId = "run_2",
+                                    label = "Run"),
 
 
 
@@ -148,12 +168,16 @@ anime_finder <- function() {
       selectize_names(input$viewed_u_tab)
     })
 
+    anime_test <- eventReactive(input$submit_1,{
+      create_numeric_input(anime_names(), nb_of_anime(), id = "score_viewed")
+    })
+
     output$anime_exp_users_score <- renderUI({
-      create_numeric_input(anime_names(), nb_of_anime())
+      anime_test()
     })
 
     all_grades <-reactive({
-      score_recovery(nb_of_anime(), input)
+      score_recovery(nb_of_anime(), input, id = "score_viewed")
     })
 
     anime_selected_table<- reactive({
@@ -169,7 +193,7 @@ anime_finder <- function() {
       item = user_item_matrix(data = anime_with_ratings, adding_row = TRUE, row_data = anime_selected_table())
     })
 
-    user_recommendation = reactive({
+    user_recommendation = eventReactive(input$run_1, {
       user_based_recom(999999999, user_item_u() , anime_with_ratings, 5, 1, 10)
 
     })
@@ -188,7 +212,7 @@ anime_finder <- function() {
       item <- user_item_matrix()
     })
 
-    item_recommendation_otp = reactive({
+    item_recommendation_otp = eventReactive(input$run_2, {
       item_recommendation(input$viewed_i_tab, user_item_i(), 5, anime)
 
     })

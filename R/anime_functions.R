@@ -95,7 +95,7 @@ user_based_recom = function(userid = 999999999 ,
     user_item_matrix,
     1,
     FUN = function(y)
-      cos_similarity(user_item_matrix[user_index, ], y)
+      ProjectG5::cos_similarity(user_item_matrix[user_index, ], y)
   )
 
   similar_users = tibble(user_id = names(similarity),
@@ -197,7 +197,7 @@ item_recommendation = function(selected_item_name, rating_matrix, n_recommendati
   item_index = which(colnames(rating_matrix) == selected_item_id)
 
   similarity = apply(rating_matrix, 2, FUN = function(y)
-    cos_similarity(rating_matrix[,item_index], y))
+    ProjectG5::cos_similarity(rating_matrix[,item_index], y))
 
   recommendations = tibble(item_id = names(similarity),
                            similarity = similarity) %>%
