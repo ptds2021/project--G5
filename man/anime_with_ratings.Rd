@@ -20,15 +20,11 @@
     \item{\code{rating}}{a numeric vector}
   }
 }
-\details{
-%%
-}
+
 \source{
  Thise data was first obtained on the website Kaggle, which was upload thanks to the site MyAnimeList
 }
-\references{
-%%
-}
+
 \examples{
 data(anime_with_ratings)
 ## maybe str(anime_with_ratings) ; plot(anime_with_ratings) ...

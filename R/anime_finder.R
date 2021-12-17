@@ -22,13 +22,6 @@
 anime_finder <- function() {
   globalVariables(c("Duration", "Episodes", "Genders", "Name", "Popularity", "Rating", "Type", "anime",
                     "anime_with_ratings", "item_id", "pivot_wider", "rating", "str_detect", "user_id"))
-  library(tidyverse)
-  library(shiny)
-  library(shinydashboard)
-  library(DT)
-  library(ProjectG5)
-  library(tibble)
-  library(stringr)
 
   anime <- tibble::tibble(ProjectG5::anime)
 

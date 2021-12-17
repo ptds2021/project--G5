@@ -44,9 +44,6 @@
 \source{
   Thise data was first obtained on the website Kaggle, which was upload thanks to the site MyAnimeList
 }
-\references{
-
-}
 \examples{
 data(anime)
 ## maybe str(anime) ; plot(anime) ...
