@@ -8,7 +8,7 @@ item_recommendation(
   selected_item_name,
   user_item_matrix,
   n_recommendation,
-  anime
+  data = anime
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ item_recommendation(
 
 \item{n_recommendation}{number of recommendation wanted by the user}
 
-\item{anime}{is the data used}
+\item{data}{table of all anime}
 }
 \value{
 Return a table composed of `n_recommendation` that the user have not seen yet

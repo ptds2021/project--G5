@@ -93,6 +93,8 @@ cos_similarity = function(A,B){
 #'
 #'@return Return a table composed of `n_recommendation` that the user have not seen yet
 #'
+#'@import utils
+#'
 #'
 #'@export
 
@@ -138,7 +140,7 @@ user_based_recom = function(userid = 999999999 ,
               rating = mean(rating)) %>%
     filter(count > threshold) %>%
     arrange(desc(rating), desc(count)) %>%
-    head(n_recommendation)
+    utils::head(n_recommendation)
 
   return(recommendations)
 
@@ -209,7 +211,6 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 #'@param user_item_matrix matrix created by the function `user_item_matrix`
 #'@param n_recommendation number of recommendation wanted by the user
 #'@param data table of all anime
-#'@param anime is the data used
 #'
 #'@return Return a table composed of `n_recommendation` that the user have not seen yet
 #'
@@ -217,7 +218,10 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 #'@export
 
 
-item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, anime){
+item_recommendation = function(selected_item_name,
+                               user_item_matrix,
+                               n_recommendation,
+                               data = anime){
 
   # Controls
   if (!is.numeric(n_recommendation)) {
