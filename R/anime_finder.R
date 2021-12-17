@@ -14,13 +14,14 @@
 #'@import tidyverse
 #'@import tibble
 #'@import stringr
-#'@import semantic.dashboard
+#'
 #'
 #'
 #'@export
 
 anime_finder <- function() {
-
+  globalVariables(c("Duration", "Episodes", "Genders", "Name", "Popularity", "Rating", "Type", "anime",
+                    "anime_with_ratings", "item_id", "pivot_wider", "rating", "str_detect", "user_id"))
   library(tidyverse)
   library(shiny)
   library(shinydashboard)
@@ -28,7 +29,6 @@ anime_finder <- function() {
   library(ProjectG5)
   library(tibble)
   library(stringr)
-  library(semantic.dashboard)
 
   anime <- tibble::tibble(ProjectG5::anime)
 
@@ -51,7 +51,7 @@ anime_finder <- function() {
 
   sidebar <- shinydashboard::dashboardSidebar(
     shinydashboard::sidebarMenu(
-      shinydashboard:::menuItem("Homepage",
+      shinydashboard::menuItem("Homepage",
                                 tabName = "homepage_tab"),
       shinydashboard::menuItem("Newcommer",
                                tabName = "newcommer_tab"),
@@ -143,7 +143,7 @@ anime_finder <- function() {
                        ),
                        shiny::column(3,
                           shiny::selectInput(inputId = "n_recomm_1",
-                                             label = "N° recom",
+                                             label = "N\u00b0 recom",
                                              choices = c(5,10,15,20,25))
                        ),
                        shiny::actionButton(inputId = "submit_1",
@@ -182,7 +182,7 @@ anime_finder <- function() {
                        ),
                        shiny::column(3,
                             shiny::selectInput(inputId = "n_recomm_2",
-                                               label = "N° recom",
+                                               label = "N\u00b0 recom",
                                                choices = c( 5 , 10 , 15 , 20 , 25 ),
                          )
                        ),

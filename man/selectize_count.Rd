@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic_functions.R
 \name{selectize_count}
 \alias{selectize_count}
-\title{Simply compute the amount of items selected in the selectizeInput}
+\title{Computation of the amount of items selected in the selectizeInput}
 \usage{
 selectize_count(id)
 }
@@ -13,7 +13,7 @@ selectize_count(id)
 return the number of values selected
 }
 \description{
-Simply compute the amount of items selected in the selectizeInput
+Compute the amount of items selected in the selectizeInput
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

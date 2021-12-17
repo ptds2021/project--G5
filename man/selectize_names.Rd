@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic_functions.R
 \name{selectize_names}
 \alias{selectize_names}
-\title{Simply get the vector of names selected in the selectizeInput}
+\title{Vector of names selected in the selectizeInput}
 \usage{
 selectize_names(id)
 }
@@ -13,7 +13,7 @@ selectize_names(id)
 return a vector of the item names selected
 }
 \description{
-Simply get the vector of names selected in the selectizeInput
+Get the vector of names selected in the selectizeInput
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

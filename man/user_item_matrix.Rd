@@ -11,11 +11,13 @@ user_item_matrix(
 )
 }
 \arguments{
-\item{data}{data having the user ratings per anime / item `anime_with_ratings` by default}
+\item{data}{data having the user ratings per anime}
 
 \item{adding_row}{Variable that is either TRUE if you want the matrix for the user-based recommendation or FALSE if you want the matrix for the item-based recommendation}
 
 \item{row_data}{table created by the function `user_data()`}
+
+\item{anime_with_ratings}{the data by default}
 }
 \value{
 Return a matrix where the x axis include the item_id and the y axis include the user_id. Each line is the score per item per user

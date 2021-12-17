@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic_functions.R
 \name{create_numeric_input}
 \alias{create_numeric_input}
-\title{Create numeric inputs depending on the selection of the user in the selectizeInput. You first need to run both `selectize_count()` and `selectize_names()` to run this.}
+\title{Numeric inputs depending on the selection of the user in the selectizeInput}
 \usage{
 create_numeric_input(
   selectednames,

@@ -1,4 +1,3 @@
-library(ProjectG5)
 
 library(testthat)
 

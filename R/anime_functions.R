@@ -150,7 +150,8 @@ user_based_recom = function(userid = 999999999 ,
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
-#'@param data data having the user ratings per anime / item `anime_with_ratings` by default
+#'@param data data having the user ratings per anime
+#'@param anime_with_ratings the data by default
 #'@param adding_row Variable that is either TRUE if you want the matrix for the user-based recommendation or FALSE if you want the matrix for the item-based recommendation
 #'@param row_data table created by the function `user_data()`
 #'
@@ -208,6 +209,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 #'@param user_item_matrix matrix created by the function `user_item_matrix`
 #'@param n_recommendation number of recommendation wanted by the user
 #'@param data table of all anime
+#'@param anime is the data used
 #'
 #'@return Return a table composed of `n_recommendation` that the user have not seen yet
 #'
@@ -215,7 +217,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 #'@export
 
 
-item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, data){
+item_recommendation = function(selected_item_name, user_item_matrix, n_recommendation, anime){
 
   # Controls
   if (!is.numeric(n_recommendation)) {
