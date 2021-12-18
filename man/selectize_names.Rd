@@ -15,6 +15,17 @@ return a vector of the item names selected
 \description{
 Get the vector of names selected in the selectizeInput
 }
+\examples{
+
+#let's say the user selected those anime in the app
+selectize <- c("Naruto", "Death Note", "One Piece")
+
+#we will then recover the following with the function
+u <- selectize_names(selectize)
+
+print(u)
+
+}
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 }

@@ -39,9 +39,11 @@ x <- user_item_matrix(anime_with_ratings, adding_row = FALSE)
 
 
 #creation of a table to add rows, userid high on a voluntary basis
-y <- tibble::tibble(Name = c("Death Note, Hunter x Hunter"), rating = c(10,7))
+y <- tibble::tibble(Name = c("Death Note", "Naruto"), rating = c(10,7))
 
-anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name")) \%>\%  filter(Name \%in\% anime_names()) \%>\%  mutate(user_id = 999999999)
+anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name"))
+anime_selected <- dplyr::filter(anime_selected, Name \%in\% names_selected)
+anime_selected <- dplyr::mutate(anime_selected, user_id = 999999999)
 
 #creation of the matrix while adding rows
 z <- user_item_matrix(anime_with_ratings, adding_row = TRUE, row_data = anime_selected)

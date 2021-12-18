@@ -11,6 +11,14 @@ selectize_count(id)
 }
 \value{
 return the number of values selected
+
+#let's say the user selected those anime in the app
+selectize <- c("Naruto", "Death Note", "One Piece")
+
+#we will then recover the following with the function
+t <- selectize_count(selectize)
+
+print(t)
 }
 \description{
 Compute the amount of items selected in the selectizeInput

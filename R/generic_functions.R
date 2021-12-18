@@ -9,6 +9,14 @@
 #'
 #'@return return the number of values selected
 #'
+#'#let's say the user selected those anime in the app
+#'selectize <- c("Naruto", "Death Note", "One Piece")
+#'
+#'#we will then recover the following with the function
+#'t <- selectize_count(selectize)
+#'
+#'print(t)
+#'
 #'@export
 
 selectize_count <- function(id){
@@ -24,6 +32,16 @@ selectize_count <- function(id){
 #'@param id inputId of the selectizeInput
 #'
 #'@return return a vector of the item names selected
+#'
+#'@examples
+#'
+#'#let's say the user selected those anime in the app
+#'selectize <- c("Naruto", "Death Note", "One Piece")
+#'
+#'#we will then recover the following with the function
+#'u <- selectize_names(selectize)
+#'
+#'print(u)
 #'
 #'@export
 
@@ -47,6 +65,19 @@ selectize_names <- function(id){
 #'@param id id to add when we want to use the functions more than one time in the app
 #'
 #'@return return a vector containing the numbers the user selected from 1:10
+#'
+#'@examples
+#'
+#'#let's say the user selected those anime in the app
+#'selectize <- c("Naruto", "Death Note", "One Piece")
+#'
+#'#we will use both selectize_names and selectize_count
+#'names <- selectize_names(selectize)
+#'count <- selectize_count(selectize)
+#'
+#'#we can then create the inputs
+#'create_numeric_input(names, count, id = "example")
+#'
 #'
 #'@export
 
@@ -102,6 +133,24 @@ create_numeric_input <- function(selectednames,
 #'@param id id to add when we want to use the functions more than one time in the app
 #'
 #'@return return a vector containing the numbers the user selected from 1:10
+#'\dontrun{
+#'#let's say the user selected those anime in the app
+#'selectize <- c("Naruto", "Death Note", "One Piece")
+#'
+#'#we will use both selectize_names and selectize_count
+#'names <- selectize_names(selectize)
+#'count <- selectize_count(selectize)
+#'
+#'#we can then create the inputs
+#'inputs <- create_numeric_input(names, count, id = "example")
+#'
+#'#to recover the weight entered by the user we then run
+#'score_recovery(count, input, id = "example")
+#'
+#'
+#'#note that input are the input from shiny server
+#'#and that this code cannot be ran outside the application
+#'}
 #'
 #'@export
 

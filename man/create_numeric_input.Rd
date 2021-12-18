@@ -35,6 +35,20 @@ return a vector containing the numbers the user selected from 1:10
 \description{
 Create numeric inputs depending on the selection of the user in the selectizeInput. You first need to run both `selectize_count()` and `selectize_names()` to run this.
 }
+\examples{
+
+#let's say the user selected those anime in the app
+selectize <- c("Naruto", "Death Note", "One Piece")
+
+#we will use both selectize_names and selectize_count
+names <- selectize_names(selectize)
+count <- selectize_count(selectize)
+
+#we can then create the inputs
+create_numeric_input(names, count, id = "example")
+
+
+}
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 }
