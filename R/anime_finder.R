@@ -14,7 +14,7 @@
 #'@import tidyverse
 #'@import tibble
 #'@import stringr
-#'
+#'@import tidyr
 #'
 #'
 #'@export
@@ -75,7 +75,7 @@ anime_finder <- function() {
                              no knowledge about anime?"),
               shiny::tags$h3("For the newbies: go to the first tab to have
                              recommendation according to your age, time that you
-                             have in front of you and gender that you like."),
+                             have before you and type that you like."),
               shiny::tags$h3("For experts: go to the next two tabs. The first
                              one will give you anime recommendations according
                              to the anime you have selected beforehand. The
@@ -90,9 +90,8 @@ anime_finder <- function() {
 
       shinydashboard::tabItem(tabName = "newcommer_tab",
             shiny::tags$h1("Newbie search"),
-            shiny::tags$h3("In this tab, simply enter you age, the type of
-                           interests an the time you have to watch or start
-                           watching the anime."),
+            shiny::tags$h3("In this tab, simply enter your age, your type of
+                           interests and how much time you have before you."),
             br(),
 
             shinydashboard::box(background='purple',
@@ -103,7 +102,7 @@ anime_finder <- function() {
                                       value = 20)),
                   shiny::column(4,
                          shiny::selectInput(inputId = "gender",
-                                     label =  "What gender of anime would
+                                     label =  "What type of anime would
                                      you want to see?",
                                      choices = Gender_list,
                                      multiple = TRUE,
@@ -116,7 +115,7 @@ anime_finder <- function() {
                                  border-bottom: 1px solid black ;}")),
                          shiny::sliderInput(inputId = "freetime",
                                      label = "How much time do you have
-                                     in front of you (in minutes) ?",
+                                     before you (in minutes) ?",
                                      min = 1,
                                      max = 180,
                                      value = 30,
@@ -133,14 +132,15 @@ anime_finder <- function() {
       # User based Recommendation tab
       shinydashboard::tabItem(tabName = "experienced_u_tab",
               shiny::tags$h1("User based search"),
-              shiny::tags$h3("In this tab, You will need to start by selecting
-                             animes, either one or many, as wou want. Then click
-                             on 'Generate score boxes'. Once this is done, enter
-                             scores in between 1 and 10 for each anime. Finally,
-                             click on run! This will generate the results by
-                             searching what other users that are similar to you
-                             liked!"),
-              shiny::tags$h3("You can also choose how many results wou want by
+              shiny::tags$h3("In this tab, you will need to start by selecting
+                             one or several anime that you have liked. Then
+                             click on 'Generate score boxes'. Once this is done,
+                             enter scores between 1 and 10 illustrating how
+                             much you liked each anime.
+                             Finally, click on run! This will generate the
+                             results by searching what other users similar to
+                             you liked!"),
+              shiny::tags$h3("You can also choose how many results you want by
                              selecting it in the 'N\u00b0 recom' box!"),
               br(),
               shiny::column(4,
@@ -187,10 +187,11 @@ anime_finder <- function() {
 
       shinydashboard::tabItem(tabName = "experienced_i_tab",
               shiny::tags$h1("Item Based search"),
-              shiny::tags$h3("In this tab, simply select one anime and then
-                           click on run to get a result! It is generated through
-                           comparison of item scores from users."),
-              shiny::tags$h3("You can also choose how many results wou want by
+              shiny::tags$h3("In this tab, simply select one anime you have liked
+                            and then click on run to get a result! It is
+                            generated through comparison of item scores from
+                            users."),
+              shiny::tags$h3("You can also choose how many results you want by
                              selecting it in the 'N\u00b0 recom' box!"),
               br(),
               shiny::column(4,
