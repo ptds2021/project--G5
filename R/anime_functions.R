@@ -4,7 +4,7 @@
 #'
 #'@author Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 #'
-#'@param anime data containing the list of anime with the variables being description for each anime
+#'@param data data containing the list of anime with the variables being description for each anime
 #'@param age age given by the person
 #'@param gender theme of the anime. For instance if you like action anime, put "action"
 #'@param freetime free time that the person has to use in order to watch the anime
@@ -13,7 +13,7 @@
 #'
 #'@export
 
-newcommer_recom <- function(anime, age, gender, freetime){
+newcommer_recom <- function(data, age, gender, freetime){
   # Controls
   if (!is.numeric(age)) {
     stop("Argument age is not valid. It must be a number.")
@@ -21,7 +21,7 @@ newcommer_recom <- function(anime, age, gender, freetime){
   if (age <= 0) {
     stop("Argument age is not valid. It must be positive.")
   }
-  if (!is.integer(freetime)) {
+  if (!is.numeric(freetime)) {
     stop("Argument freetime is not valid. It must be a number.")
   }
   if (freetime <= 0) {
@@ -29,21 +29,21 @@ newcommer_recom <- function(anime, age, gender, freetime){
   }
 
   if  (age < 13) {
-    newdata <- anime %>%
+    newdata <- data %>%
       filter(Rating == 'G - All Ages')
   } else if (age >= 13 & age <= 16) {
-    newdata <- anime %>%
+    newdata <- data %>%
       filter(Rating == 'G - All Ages' |
                Rating == 'PG-13 - Teens 13 or older')
   } else if (age > 16 & age < 18) {
-    newdata <- anime %>%
+    newdata <- data %>%
       filter(
         Rating == 'G - All Ages' |
           Rating == 'R+ - Mild Nudity' |
           Rating == 'R - 17+ (violence & profanity)'
       )
   } else {
-    newdata <- anime
+    newdata <- data
   }
 
   finaldata = newdata %>%
@@ -221,7 +221,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 item_recommendation = function(selected_item_name,
                                user_item_matrix,
                                n_recommendation,
-                               data = anime){
+                               data){
 
   # Controls
   if (!is.numeric(n_recommendation)) {
