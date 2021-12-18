@@ -16,10 +16,10 @@ test_that("newcommer_recom input",{
 test_that("newcommer_recom output",{
   #checking that age is not character and that it does not work when it is
   expect_type(newcommer_recom(anime,
-                              age = "text",
+                              age = 20,
                               gender = "action",
                               freetime = 60),
-              list)
+              "list")
 })
 
 
