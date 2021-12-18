@@ -24,7 +24,7 @@ Filter the anime list depending on different variables. These variables must be 
 \examples{
 
 #loading the data from the package
-anime <- tibble(ProjectG5::anime)
+anime <- tibble::tibble(ProjectG5::anime)
 
 #filtering the table to make propositions to the user through the function
 newcommer_recom(anime, 15, "Sport", 30)
