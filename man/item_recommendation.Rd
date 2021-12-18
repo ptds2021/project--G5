@@ -8,7 +8,7 @@ item_recommendation(
   selected_item_name,
   user_item_matrix,
   n_recommendation,
-  data = anime
+  data
 )
 }
 \arguments{

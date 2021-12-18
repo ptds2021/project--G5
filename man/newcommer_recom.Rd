@@ -4,10 +4,10 @@
 \alias{newcommer_recom}
 \title{Filter anime according to preferences}
 \usage{
-newcommer_recom(anime, age, gender, freetime)
+newcommer_recom(data, age, gender, freetime)
 }
 \arguments{
-\item{anime}{data containing the list of anime with the variables being description for each anime}
+\item{data}{data containing the list of anime with the variables being description for each anime}
 
 \item{age}{age given by the person}
 
