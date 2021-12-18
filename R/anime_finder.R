@@ -46,11 +46,11 @@ anime_finder <- function() {
     shinydashboard::sidebarMenu(
       shinydashboard::menuItem("Homepage",
                                 tabName = "homepage_tab"),
-      shinydashboard::menuItem("I’m new",
+      shinydashboard::menuItem("I am new",
                                tabName = "newcommer_tab"),
-      shinydashboard::menuItem("I’m an expert",
+      shinydashboard::menuItem("I am an expert",
                                tabName = "experienced_i_tab"),
-      shinydashboard::menuItem("I’m a judging expert",
+      shinydashboard::menuItem("I am a judging expert",
                                tabName = "experienced_u_tab")
     )
   )
