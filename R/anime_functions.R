@@ -216,7 +216,7 @@ user_based_recom = function(userid = 999999999 ,
 #'
 #'
 #'#creation of a table to add rows, userid high on a voluntary basis
-#'y <- tibble::tibble(Name = c("Death Note", "Naruto"), rating = c(10,7))
+#'temp_tibble <- tibble::tibble(Name = c("Death Note", "Naruto"), rating = c(10,7))
 #'
 #'anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name"))
 #'anime_selected <- dplyr::filter(anime_selected, Name %in% names_selected)
