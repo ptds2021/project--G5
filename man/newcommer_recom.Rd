@@ -21,6 +21,15 @@ Return a filtered table with the anime depending on the inputs
 \description{
 Filter the anime list depending on different variables. These variables must be included in the data set.
 }
+\examples{
+
+#loading the data from the package
+anime <- tibble(ProjectG5::anime)
+
+#filtering the table to make propositions to the user through the function
+newcommer_recom(anime, 15, "Sport", 30)
+
+}
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 }

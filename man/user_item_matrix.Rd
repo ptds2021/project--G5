@@ -16,14 +16,38 @@ user_item_matrix(
 \item{adding_row}{Variable that is either TRUE if you want the matrix for the user-based recommendation or FALSE if you want the matrix for the item-based recommendation}
 
 \item{row_data}{table created by the function `user_data()`}
-
-\item{anime_with_ratings}{the data by default}
 }
 \value{
 Return a matrix where the x axis include the item_id and the y axis include the user_id. Each line is the score per item per user
 }
 \description{
 Create the user_item matrix from the given data. We use `adding_row = TRUE` for the user based recommendation to be able to add the user selected data to the table
+}
+\examples{
+
+#import datasets from the package
+anime_with_ratings <-  tibble::tibble(ProjectG5::anime_with_ratings)
+anime <- tibble::tibble(ProjectG5::anime)
+
+#creation of the matrix without adding rows
+x <- user_item_matrix(anime_with_ratings, adding_row = FALSE)
+
+#not printed there output would be too long
+
+
+
+
+
+#creation of a table to add rows, userid high on a voluntary basis
+y <- tibble::tibble(Name = c("Death Note, Hunter x Hunter"), rating = c(10,7))
+
+anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name")) \%>\%  filter(Name \%in\% anime_names()) \%>\%  mutate(user_id = 999999999)
+
+#creation of the matrix while adding rows
+z <- user_item_matrix(anime_with_ratings, adding_row = TRUE, row_data = anime_selected)
+
+#not printed here, output would be too long
+
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

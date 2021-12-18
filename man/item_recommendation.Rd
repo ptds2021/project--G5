@@ -26,6 +26,21 @@ Return a table composed of `n_recommendation` that the user have not seen yet
 \description{
 Use the user item matrix to search for similar anime
 }
+\examples{
+#Simple example to showcase what is happening in the application
+
+#User selection
+selected_item_name = "Naruto"
+
+#first create the item matrix
+anime <-  tibble::tibble(ProjectG5::anime)
+anime_with_ratings <-  tibble::tibble(ProjectG5::anime_with_ratings)
+item_matrix <- user_item_matrix(anime_with_ratings, adding_row = FALSE)
+
+#then use it to run the function
+item_recommendation(selected_item_name, item_matrix, 5, anime)
+
+}
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 }

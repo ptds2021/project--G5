@@ -7,7 +7,7 @@
 user_based_recom(
   userid = 999999999,
   user_item_matrix,
-  ratings_matrix,
+  ratings_data,
   n_recommendation = 5,
   threshold = 1,
   nearest_neighbors = 10
@@ -18,7 +18,7 @@ user_based_recom(
 
 \item{user_item_matrix}{matrix created by the function `user_item_matrix`}
 
-\item{ratings_matrix}{table of ratings similar to the one we kept}
+\item{ratings_data}{table of ratings similar to the one we kept}
 
 \item{n_recommendation}{number of recommendations wanted}
 
@@ -31,6 +31,24 @@ Return a table composed of `n_recommendation` that the user have not seen yet
 }
 \description{
 Use the user item matrix to search for similar users in order to get the anime they graded the best and that we have not watched
+}
+\examples{
+
+#Simple example to showcase what is happening in the application
+
+#import dataset from the package
+anime_with_ratings <-  tibble::tibble(ProjectG5::anime_with_ratings)
+
+#selection of the user example
+names_selected <- c("Death Note", "Naruto")
+y <- tibble::tibble(Name = names_selected, rating = c(10,7))
+anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name")) \%>\%  filter(Name \%in\% names_selected) \%>\%  mutate(user_id = 999999999)
+
+#creation of the matrix with what the user selected
+item_matrix <- user_item_matrix(anime_with_ratings, adding_row = TRUE, row_data = anime_selected)
+
+user_based_recom(999999999, item_matrix, anime_with_ratings, 5, 1, 10)
+
 }
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger

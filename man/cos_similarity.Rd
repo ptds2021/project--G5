@@ -17,6 +17,18 @@ Return the cosine similarity value
 \description{
 Compute the cosine similarity between two objects A and B
 }
+\examples{
+
+#setting seed to always have the same results
+set.seed(10)
+
+#creating a matrix with random numbers in between 1 to 10 from a uniform distribution
+x <- matrix(runif(10)*10, ncol=5, nrow=4, byrow=FALSE)
+
+#computing the cosine similarity between
+cos_similarity(x[1,], x[3,])
+
+}
 \author{
 Marie Bellier, Massimo Finini, Meri Likoska, Vania Rodrigues Telo Ramos, Xavier Renger
 }
