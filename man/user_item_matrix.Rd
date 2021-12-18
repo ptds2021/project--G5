@@ -39,7 +39,12 @@ x <- user_item_matrix(anime_with_ratings, adding_row = FALSE)
 
 
 #creation of a table to add rows, userid high on a voluntary basis
-y <- tibble::tibble(Name = c("Death Note", "Naruto"), rating = c(10,7))
+
+#selection of the user example
+names_selected <- c("Death Note", "Naruto")
+score_entered <- c(10,7)
+
+temp_tibble <- tibble::tibble(Name = names_selected, rating = score_entered)
 
 anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name"))
 anime_selected <- dplyr::filter(anime_selected, Name \%in\% names_selected)
