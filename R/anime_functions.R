@@ -159,6 +159,7 @@ user_based_recom = function(userid = 999999999 ,
 #'
 #'@return Return a matrix where the x axis include the item_id and the y axis include the user_id. Each line is the score per item per user
 #'
+#'@import tidyr
 #'
 #'@export
 
@@ -170,7 +171,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
     user_item <- data %>%
       bind_rows(row_data)%>%
       select(item_id,rating, user_id)%>%
-      pivot_wider(names_from = item_id, values_from = rating) %>%
+      tidyr::pivot_wider(names_from = item_id, values_from = rating) %>%
       as.data.frame()
 
     row.names(user_item) = user_item$user_id
@@ -185,7 +186,7 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
 
     user_item <- data %>%
       select(item_id, rating, user_id)%>%
-      pivot_wider(names_from = item_id, values_from = rating) %>%
+      tidyr::pivot_wider(names_from = item_id, values_from = rating) %>%
       as.data.frame()
 
     row.names(user_item) = user_item$user_id
@@ -242,7 +243,7 @@ item_recommendation = function(selected_item_name,
     filter(item_id != selected_item_id) %>%
     top_n(n_recommendation, similarity) %>%
     arrange(desc(similarity)) %>%
-    left_join(anime, by= "item_id") %>%
+    left_join(data, by= "item_id") %>%
     select(item_id, Name, Episodes, Duration, similarity)
 
   return(recommendations)
