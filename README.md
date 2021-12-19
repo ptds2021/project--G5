@@ -49,4 +49,7 @@ And finally, the one running the application :
 ## Website and ShinyApp
 In order to have access to the ShinyApp, you just have to run `ProjectG5::anime_finder()` in R. Or go to https://vhain.shinyapps.io/anime_finder/
 
-Website info: ... 
+Website info: 
+
+ - Our Blogdown website : https://anime-finder-ptds2021.netlify.app/
+ - Our pkgdown website : https://ptds2021.github.io/project--G5/

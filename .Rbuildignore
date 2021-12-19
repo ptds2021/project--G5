@@ -7,4 +7,5 @@
 ^docs$
 ^pkgdown$
 ^\.github$
-
+^rsconnect$
+^app.R
