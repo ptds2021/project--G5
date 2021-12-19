@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/index.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/anime.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/anime_finder.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/anime_with_ratings.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/cos_similarity.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/create_numeric_input.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/item_recommendation.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/newcommer_recom.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/score_recovery.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/selectize_count.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/selectize_names.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/user_based_recom.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/reference/user_item_matrix.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/articles/data-wrangling.html</loc>
+  </url>
+  <url>
+    <loc>~ https://ptds2021.github.io/project--G5/articles/vignette-G5.html</loc>
+  </url>
+</urlset>

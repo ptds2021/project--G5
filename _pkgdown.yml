@@ -1,0 +1,14 @@
+url: ~ https://ptds2021.github.io/project--G5
+template:
+ package: preferably
+
+reference:
+- title: "Our functions:"
+  desc: "Click on the links or go to the vignette to check how they work!"
+
+- contents:
+  - starts_with("")
+  - starts_with("")
+  - matches("")
+- r_github_packages:
+  - amirmasoudabdol/preferably

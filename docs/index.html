@@ -5,9 +5,26 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime recommendation • ProjectG5</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<!-- Inform modern browsers that this page supports both dark and light color schemes,
+  and the page author prefers light. --><meta name="color-scheme" content="dark light">
+<script>
+  // If `prefers-color-scheme` is not supported, fall back to light mode.
+  // i.e. In this case, inject the `light` CSS before the others, with
+  // no media filter so that it will be downloaded with highest priority.
+  if (window.matchMedia("(prefers-color-scheme: dark)").media === "not all") {
+    document.documentElement.style.display = "none";
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      "<link id=\"css\" rel=\"stylesheet\" href=\"https://bootswatch.com/3/flatly/bootstrap.css\" onload=\"document.documentElement.style.display = ''\">"
+    );
+  }
+</script><title>Anime recommendation • ProjectG5</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- Flatly Theme - Light  --><link id="css-light" rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<!-- Darkly Theme - Dark --><link id="css-dark" rel="stylesheet" href="https://bootswatch.com/3/darkly/bootstrap.css" media="(prefers-color-scheme: dark)">
+<!-- preferably CSS --><link rel="stylesheet" href="preferably.css">
+<link id="css-code-light" rel="stylesheet" href="code-color-scheme-light.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<link id="css-code-dark" rel="stylesheet" href="code-color-scheme-dark.css" media="(prefers-color-scheme: dark)">
+<!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -54,6 +71,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/data-wrangling.html">Data-wrangling</a>
+    </li>
+    <li>
       <a href="articles/vignette-G5.html">vignette-G5</a>
     </li>
   </ul>
@@ -83,22 +103,29 @@
 <h2 class="hasAnchor">
 <a href="#goal" class="anchor"></a>Goal</h2>
 <p>The goal of our project is to make the user of our application fill in a certain number of boxes in order to offer him the best anime recommendation: We can ask him which type of anime he prefers ( i.e. actions, romance). We can also ask him to give us some indications about the time he has to watch it. Finally, with their age, we can also better target our recommendation thanks to the <code>Rating</code> variable.</p>
+<p>##Data</p>
+<p>To create the data we have into the package, we downloaded some from Kaggle <a href="https://www.kaggle.com/hernan4444/anime-recommendation-database-2020?select=watching_status.csv">Anime dataset</a>. We downloaded 2 tables, <code>anime</code> and <code>animelist</code>. Note that those are not present on the GitHub, and there is a simple reason for this : <code>animelist</code> was 1.9 Gb and GitHub asks not to go over 1Gb for a given repository if possible. Therefore we chose not to put any of them in the GitHub since you would have to download at east one.</p>
+<p>Those tables were then used, and you can check the code on how it was done in the <code>data-wrangling</code> article, to create 2 datasets that are included in the package:</p>
+<p>1) <code>anime</code> containing the full anime list with some variables</p>
+<p>2) <code>anime_with_ratings</code> containing anime_id and scores of the users kept for each of them</p>
 </div>
 <div id="functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions" class="anchor"></a>Functions</h2>
 <p>In order to have a well-working shiny app, we constructed several functions:</p>
-<p>4 anime oriented</p>
-<p>FUNCTION newcommer_recom( ANIME, AGE, GENDERS, FREETIME )</p>
-<p>FUNCTION user_based_recom(userid = 999999999 , user_item_matrix , ratings_matrix , n_recommendation = 5, threshold = 1, nearest_neighbors = 10)</p>
-<p>FUNCTION user_item_matrix(data = anime_with_ratings, adding_row = FALSE, row_data = NULL)</p>
-<p>FUNCTION item_recommendation(selected_item_name, rating_matrix, n_recommendation, data)</p>
-<p>5 generic ones</p>
-<p>FUNCTION selectize_count (id)</p>
-<p>FUNCTION selectize_names (id)</p>
-<p>FUNCTION create_numeric_input (selectednames, selectedcounts, min_user = 1, max_user = 10, placeholder = 5, wanted_step = 0.5)</p>
-<p>FUNCTION score_recovery(selectedcounts, input)</p>
-<p>FUNCTION cos_similarity( A, B)</p>
+<p>There are 4 anime oriented:</p>
+<p>1) <code><a href="reference/newcommer_recom.html">newcommer_recom()</a></code></p>
+<p>2) <code><a href="reference/user_based_recom.html">user_based_recom()</a></code></p>
+<p>3) <code><a href="reference/user_item_matrix.html">user_item_matrix()</a></code></p>
+<p>4) <code><a href="reference/item_recommendation.html">item_recommendation()</a></code></p>
+<p>And 5 generic ones that can be re-used easily</p>
+<p>1) <code><a href="reference/selectize_count.html">selectize_count()</a></code></p>
+<p>2) <code><a href="reference/selectize_names.html">selectize_names ()</a></code></p>
+<p>3) <code><a href="reference/create_numeric_input.html">create_numeric_input ()</a></code></p>
+<p>4) <code><a href="reference/score_recovery.html">score_recovery()</a></code></p>
+<p>5) <code><a href="reference/cos_similarity.html">cos_similarity()</a></code></p>
+<p>And finally, the one running the application :</p>
+<p>1) <code><a href="reference/anime_finder.html">anime_finder()</a></code></p>
 </div>
 <div id="website-and-shinyapp" class="section level2">
 <h2 class="hasAnchor">
@@ -134,7 +161,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p>Made with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1, using <a href="https://preferably.amirmasoudabdol.name/?source=footer">preferably</a> template.</p>
 </div>
 
       </footer>
