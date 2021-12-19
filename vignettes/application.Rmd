@@ -27,6 +27,6 @@ For experts, go to the next two tabs:
 
 ## Play with the application
 
-You can either use the application preview under this text or directly go to https://massimofinini.shinyapps.io/anime_finder/ to use it.
+You can either use the application preview under this text but it is clearly not optimal so we would advise you to directly go to https://massimofinini.shinyapps.io/anime_finder/ to use it.
 
-<iframe src = https://massimofinini.shinyapps.io/anime_finder/ height=800px width=1000px>
+<iframe src = https://massimofinini.shinyapps.io/anime_finder/ height=500px width=100%>

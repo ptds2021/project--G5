@@ -14,6 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+Before anything, to install the package you will need to run :
+
+```{r, warning=FALSE, eval = FALSE}
+devtools::install_github("ptds2021/project--G5")
+```
 ```{r setup, warning=FALSE}
 library(ProjectG5)
 ```
