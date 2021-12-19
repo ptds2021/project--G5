@@ -12,3 +12,13 @@ reference:
   - matches("")
 - r_github_packages:
   - amirmasoudabdol/preferably
+
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: 1. Vignette ProjectG5
+        href: articles/vignette-G5.html
+      - text: 2. Data Wrangling
+        href: articles/data-wrangling.html

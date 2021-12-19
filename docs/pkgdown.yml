@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   data-wrangling: data-wrangling.html
   vignette-G5: vignette-G5.html
-last_built: 2021-12-19T09:43Z
+last_built: 2021-12-19T10:30Z
 urls:
   reference: ~ https://ptds2021.github.io/project--G5/reference
   article: ~ https://ptds2021.github.io/project--G5/articles
