@@ -3,3 +3,8 @@
 ^LICENSE\.md$
 ^LICENSE\.md$
 ^\.Rdatatmp$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+
