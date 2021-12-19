@@ -1,0 +1,151 @@
+---
+title: "2. Data Wrangling"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Data Wrangling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+```{r, eval = FALSE}
+#import dataset
+
+library(readr)
+library(dplyr)
+library(tidyverse)
+anime <- read_csv(
+  here::here("~/Downloads/anime.csv"),
+  col_types = cols(
+    `Japanese name` = col_skip(),
+    `Score-10` = col_skip(),
+    `Score-9` = col_skip(),
+    `Score-8` = col_skip(),
+    `Score-7` = col_skip(),
+    `Score-6` = col_skip(),
+    `Score-5` = col_skip(),
+    `Score-4` = col_skip(),
+    `Score-3` = col_skip(),
+    `Score-2` = col_skip(),
+    `Score-1` = col_skip()
+  )
+)
+
+
+#cleaning data: no NA nor Unknown and order by ranking
+anime <- anime %>%
+  rename(english_name = 'English name')%>%
+  mutate(Name = case_when(english_name == 'Unknown' ~ Name,
+                          TRUE ~ english_name))%>%
+  rename(item_id = MAL_ID)%>%
+  mutate(item_id = sprintf("ID%s", item_id))%>%
+  filter(Score != 'Unknown') %>%
+  filter(Ranked != 'Unknown') %>%
+  filter(Rating != 'Unknown') %>%
+  filter(Duration > 10) %>%
+  filter(Producers != 'Unknown' |
+           Studios != 'Unknown' | Licensors != 'Unknown') %>%
+  filter(grepl("Season", Name) == FALSE) %>%
+  filter(!is.na(Duration))%>%
+  arrange(Popularity)
+
+# separate genders
+#anime <- anime %>% separate(Genders, c("gender1", "gender2", "gender3", "gender4","gender5", "gender6"), sep=",")
+
+#Convert 2hr into 2hr.00min
+anime <- anime %>%
+  mutate(
+    Duration = ifelse(Duration == "2 hr.", "2 hr. 00 min",
+                      ifelse(Duration == "1 hr.", "1 hr. 00 min",
+                             paste0(Duration))
+  ))
+
+#Convert time in min to have numerical feature
+library(stringr)
+anime$Duration  <-
+  sapply(str_extract_all(anime$Duration , "\\d+"), function(x) {
+    x1 <- as.numeric(x)
+    if (length(x1) > 1)
+      x1[1] * 60 + x1[2]
+    else
+      x1[1]
+  })
+
+anime$Duration <- as.integer(anime$Duration)
+
+#mutate a new column to categorize duration
+anime <-
+  anime %>% mutate(Duration_C = ifelse(
+    Duration < 30,
+    "Less than 30min",
+    ifelse(
+      Duration >= 30 &
+        Duration < 60,
+      "Less than 1h",
+      ifelse(Duration >= 60 &
+               Duration < 120, "more than 1h", "more than 2h")
+    )
+  )) %>%
+  relocate(Duration_C, .after = Duration)%>%
+  filter(!is.na(Duration))
+
+anime$Duration_C <-
+  factor(
+    anime$Duration_C,
+    levels = c("Less than 30min",
+               "Less than 1h",
+               "more than 1h",
+               "more than 2h")
+  )
+
+write.csv(anime, here::here("data/anime_tidy.RData"))
+
+usethis::use_data(anime, overwrite = TRUE)
+
+```
+
+
+
+```{r, eval = FALSE}
+#import dataset
+
+#This was kept locally and not added to the package since the document contains 107 milion lines ans is after this step not used anymore into the application
+anime_list <- read.csv(here::here("~/Downloads/animelist.csv"))
+```
+
+```{r, eval = FALSE}
+#getting list of people with more than 1500 ratings
+ratings_per_user <- anime_list %>%
+  group_by(user_id) %>% 
+  tally()%>%
+  filter(n > 4000)
+
+ggplot(ratings_per_user)+
+  geom_bar(aes(n))
+
+
+users_kept <- ratings_per_user$user_id
+```
+
+```{r, eval = FALSE}
+#using the list to create a table containing the ratings and the anime infos
+ratings_kept <- anime_list %>%
+  filter(user_id %in% users_kept & rating > 0)%>%
+  rename(item_id = anime_id)%>%
+  mutate(item_id = sprintf("ID%s", item_id))
+
+anime_with_ratings <- left_join(anime, ratings_kept, by= "item_id") %>%
+  select(item_id, user_id, Name, english_name, Episodes, Duration, rating)
+
+write.csv(anime_with_ratings, here::here("inst/extdata/anime_with_ratings.csv"))
+
+usethis::use_data(anime_with_ratings, overwrite = TRUE)
+
+
+#check for null ratings since we want to avoid them
+anime_with_ratings_null <- anime_with_ratings %>%
+  filter(is.na(rating))
+
+anime_without_ratings_vc <- anime_with_ratings_null$item_id
+```
