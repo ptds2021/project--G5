@@ -36,6 +36,7 @@ newcommer_recom <- function(data, age, gender, freetime){
     stop("Argument freetime is not valid. It must be positive.")
   }
 
+  #Function
   if  (age < 13) {
     newdata <- data %>%
       filter(Rating == 'G - All Ages')
@@ -97,6 +98,7 @@ cos_similarity = function(A,B){
 
 
 
+
 #'@title Similarity between other users to have a list of anime that the user have not seen yet
 #'
 #'@description Use the user item matrix to search for similar users in order to get the anime they graded the best and that we have not watched
@@ -153,6 +155,14 @@ user_based_recom = function(userid = 999999999 ,
   if (!is.numeric(n_recommendation)) {
     stop("Argument n_recommendation is not valid. It must be a number.")
   }
+  if(!is.numeric(threshold)){
+    stop("Argument threshold is not valid. It must be a number")
+  }
+  if(!is.numeric(nearest_neighbors)){
+    stop("Argument nearest_neighbors is not valid. It must be a number")
+  }
+
+  #Function
 
   user_index = which(rownames(user_item_matrix) == userid)
 
@@ -185,6 +195,9 @@ user_based_recom = function(userid = 999999999 ,
   return(recommendations)
 
 }
+
+
+
 
 #'@title Score per anime per user
 #'
@@ -237,6 +250,10 @@ user_based_recom = function(userid = 999999999 ,
 
 user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_data = NULL){
 
+
+
+  #Function
+
   if(adding_row == TRUE){
 
     user_item <- data %>%
@@ -268,7 +285,6 @@ user_item_matrix <- function(data = anime_with_ratings, adding_row = FALSE, row_
     return(user_item_matrix)
   }
 }
-
 
 
 
@@ -312,6 +328,14 @@ item_recommendation = function(selected_item_name,
   if (!is.numeric(n_recommendation)) {
     stop("Argument n_recommendation is not valid. It must be a number.")
   }
+  if (!is.character(selected_item_name)){
+    stop("Argument selected_item_name is not valid. It must be characters")
+  }
+
+
+
+
+  #Function
 
   item_picked <- data %>% filter(Name == selected_item_name)
 
