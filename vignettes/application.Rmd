@@ -1,0 +1,26 @@
+---
+title: "3. Application"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{3. Application}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Welcome to our anime recommendation Application
+
+This application was done for a project at HEC Lausanne for a master class named “Programming tools”.
+Its main aim is to make the user of our application fill in a certain number of boxes in order to offer him the best anime recommendation. Below is a brief summary of how to use it. 
+
+
+## How to proceed ? 
+
+Are you a great expert or are you a novice with no knowledge about anime?
+For the newbies:
+
+- Go to the first tab to have recommendation according to your age, time that you have in front of you and gender that you like.
+
+For experts, go to the next two tabs:
+
+- The first one will give you anime recommendations according to the anime you have selected beforehand. 
+- The second one will give you recommendations according to the scores you have given to several anime selected beforehand.

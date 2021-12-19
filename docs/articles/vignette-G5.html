@@ -76,6 +76,9 @@
     <li>
       <a href="../articles/data-wrangling.html">2. Data Wrangling</a>
     </li>
+    <li>
+      <a href="../articles/application.html">3. Application</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -103,28 +106,189 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ProjectG5</span><span class="op">)</span>
-<span class="co">#&gt; Warning: remplacement de l'importation précédente 'DT::dataTableOutput' par</span>ar
-<span class="co">#&gt; 'shiny::dataTableOutput' lors du chargement de 'ProjectG5'</span>
-<span class="co">#&gt; Warning: remplacement de l'importation précédente 'DT::renderDataTable' par</span>ar
-<span class="co">#&gt; 'shiny::renderDataTable' lors du chargement de 'ProjectG5'</span></code></pre></div>
-<div id="welcome-to-our-project-about-anime" class="section level3">
-<h3 class="hasAnchor">
-<a href="#welcome-to-our-project-about-anime" class="anchor"></a>Welcome to our project about anime !</h3>
-<p>The Shiny App we have created for this project concerns an anime recommendation based on these parameters: - age of the person - preferred anime genre (action, fantasy, etc.) - time available to watch the anime</p>
-<p>These different parameters will give a recommendation of an anime name.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ProjectG5</span><span class="op">)</span></code></pre></div>
+<div id="welcome-to-our-project-about-anime" class="section level2">
+<h2 class="hasAnchor">
+<a href="#welcome-to-our-project-about-anime" class="anchor"></a>Welcome to our project about anime !</h2>
+<p>The aim of the project was to create a package that would enable someone to use a shiny application to find an anime to watch. At first we started by letting the user do some simple filter with his age, type of interest and freetime available which would then return a table composed of all possible anime that are ordered by Popularity which takes into account: user scores, how much it was recently watched, etc.</p>
+<p>We then extended the application by providing two other was taken from Ander Fernández Jauregui’s <a href="https://anderfernandez.com/en/blog/how-to-code-a-recommendation-system-in-r/">Tutorial</a> and adapting it to our data:</p>
+<ol style="list-style-type: decimal">
+<li><p>An Item Based Recommendation. This is done through the creation of a user item matrix and through comparison of animes on this matrix, see the function explanations under to better understand.</p></li>
+<li><p>And the User Based Recommendation that uses the same user item matrix but this time we add rows depending on the user choice and scores and search what similar users liked.</p></li>
+</ol>
 </div>
-<div id="example-of-how-to-use-the-application" class="section level3">
+<div id="data-from-the-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-from-the-package" class="anchor"></a>Data from the package</h2>
+<p>In the package you will find some data. You can see how it was created in the Data wrangling article. We have two tables</p>
+<div id="anime" class="section level3">
 <h3 class="hasAnchor">
-<a href="#example-of-how-to-use-the-application" class="anchor"></a>Example of how to use the application</h3>
-<p>Let’s take the example of a 15 years old person, who likes fantasy and comedy anime and has 30 minutes to watch an episode. This person will first write his/her age, then the two genres he/she likes (Comedy, Fantasy) thanks to the drop-down menu offered by the application. Then, she will take the cursor and indicate “30” in the time available per minutes.</p>
-<p>We will then notice that Naruto will appear first as a recommendation. This seems plausible, since Naruto is an anime mainly aimed at children and teenagers. Moreover, each episode of Naturo lasts between 20 and 30 minutes.</p>
+<a href="#anime" class="anchor"></a>Anime</h3>
+<p>Data set composed of all kept anime with many parameters, see the reference part to check everything. To access it you can use:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">anime</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="va"><a href="../reference/anime.html">anime</a></span></code></pre></div>
+</div>
+<div id="anime-with-ratings" class="section level3">
+<h3 class="hasAnchor">
+<a href="#anime-with-ratings" class="anchor"></a>Anime with ratings</h3>
+<p>Data set composed of all kept anime with their ratings from all users that we keps, see the reference part to check everything. To access it you can use:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">anime_with_ratings</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="va"><a href="../reference/anime_with_ratings.html">anime_with_ratings</a></span></code></pre></div>
+</div>
+</div>
+<div id="launching-the-application-through-r" class="section level2">
+<h2 class="hasAnchor">
+<a href="#launching-the-application-through-r" class="anchor"></a>Launching the application through R</h2>
+<p>To launch the application when you ar ein R, simple run :</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/anime_finder.html">anime_finder</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="function-walkthrough" class="section level2">
+<h2 class="hasAnchor">
+<a href="#function-walkthrough" class="anchor"></a>Function walkthrough</h2>
+<p>We will go through the function by looking at each tab one after the other in order to make it easier for someone to understand what is happening.</p>
+<div id="basic-tab-i-am-new" class="section level3">
+<h3 class="hasAnchor">
+<a href="#basic-tab-i-am-new" class="anchor"></a>Basic tab (I am new)</h3>
+<p>Let’s first look at the function used in our first simple recommendation tab, the <code><a href="../reference/newcommer_recom.html">newcommer_recom()</a></code>. In this function we use the user selection from the application to filter the table and return all animes fitting what he wishes. Note that an anime is selected when one of the gender selected appears in it. Here we take the example of a 15 years old, that likes sport and have 30 minutes before him to watch something it will:</p>
+<ul>
+<li>Use the age to filter the right age Rating classes</li>
+<li>Into those one select all that have Sport as a type</li>
+<li>Finally filter for the ones that are 30 minutes or shorter per episode.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/newcommer_recom.html">newcommer_recom</a></span><span class="op">(</span><span class="va">anime</span>, <span class="fl">15</span>, <span class="st">"Sport"</span>, <span class="fl">30</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 315 x 7</span>
+<span class="co">#&gt;    Name                      Genders   Type  Episodes Duration Rating Popularity</span>
+<span class="co">#&gt;    &lt;chr&gt;                     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Haikyu!!                  Comedy, ~ TV    25             24 PG-13~         50</span>
+<span class="co">#&gt;  2 Kuroko's Basketball       Comedy, ~ TV    25             24 PG-13~        104</span>
+<span class="co">#&gt;  3 Kuroko's Basketball 2     Comedy, ~ TV    25             24 PG-13~        185</span>
+<span class="co">#&gt;  4 Free! - Iwatobi Swim Club Slice of~ TV    12             24 PG-13~        189</span>
+<span class="co">#&gt;  5 Yuri!!! On ICE            Comedy, ~ TV    12             23 PG-13~        191</span>
+<span class="co">#&gt;  6 Kuroko's Basketball 3     Comedy, ~ TV    25             24 PG-13~        232</span>
+<span class="co">#&gt;  7 Haikyuu!!: To the Top     Comedy, ~ TV    13             24 PG-13~        276</span>
+<span class="co">#&gt;  8 Fighting Spirit           Comedy, ~ TV    75             23 PG-13~        345</span>
+<span class="co">#&gt;  9 Chihayafuru               Drama, G~ TV    25             22 PG-13~        389</span>
+<span class="co">#&gt; 10 Free! - Eternal Summer    Slice of~ TV    13             24 PG-13~        450</span>
+<span class="co">#&gt; # ... with 305 more rows</span></code></pre></div>
+</div>
+<div id="item-based-recommendation-tab-i-am-an-expert" class="section level3">
+<h3 class="hasAnchor">
+<a href="#item-based-recommendation-tab-i-am-an-expert" class="anchor"></a>Item based recommendation tab (I am an expert)</h3>
+<p>For this recommendation, we will first need to compute the user item matrix from the <code>anime_with_ratings</code> data, for this one there is no need to add rows:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">item_matrix_1</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/user_item_matrix.html">user_item_matrix</a></span><span class="op">(</span><span class="va">anime_with_ratings</span><span class="op">)</span></code></pre></div>
+<p>Let’s now pretend that the user selected the anime <code>Naruto</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">selected_anime</span> <span class="op">&lt;-</span> <span class="st">"Naruto"</span></code></pre></div>
+<p>Now that we have all of what we need let’s run the function that will:</p>
+<ul>
+<li>Find the anime in the matrix</li>
+<li>Filter only for the users that scored it</li>
+<li>Then uses the <code><a href="../reference/cos_similarity.html">cos_similarity()</a></code> function to compute the similarity in between the selected anime and all the other ones</li>
+<li>Output only the 5 most similar anime</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/item_recommendation.html">item_recommendation</a></span><span class="op">(</span>selected_item_name <span class="op">=</span> <span class="va">selected_anime</span>,
+                               user_item_matrix <span class="op">=</span> <span class="va">item_matrix_1</span>,
+                               n_recommendation <span class="op">=</span> <span class="fl">5</span>,
+                               data <span class="op">=</span> <span class="va">anime</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 5</span>
+<span class="co">#&gt;   item_id Name             Episodes Duration similarity</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;       &lt;int&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 ID1735  Naruto:Shippuden 500            23      0.911</span>
+<span class="co">#&gt; 2 ID269   Bleach           366            24      0.876</span>
+<span class="co">#&gt; 3 ID1535  Death Note       37             23      0.862</span>
+<span class="co">#&gt; 4 ID16498 Attack on Titan  25             24      0.848</span>
+<span class="co">#&gt; 5 ID11757 Sword Art Online 25             23      0.843</span></code></pre></div>
+</div>
+<div id="user-based-recommendation-tab-i-am-a-judging-expert" class="section level3">
+<h3 class="hasAnchor">
+<a href="#user-based-recommendation-tab-i-am-a-judging-expert" class="anchor"></a>User based recommendation tab (I am a judging expert)</h3>
+<p>For this recommendation, we will first need to compute the user item matrix from the <code>anime_with_ratings</code> data, but this time we will need to add rows:</p>
+<p>To do so let’s look at both the <code><a href="../reference/selectize_count.html">selectize_count()</a></code> and the <code><a href="../reference/selectize_names.html">selectize_names()</a></code> functions. For this, let’s pretend the user selected the anime <code>Naruto</code> and <code>Death Note</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">selectize</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Naruto"</span>, <span class="st">"Death Note"</span><span class="op">)</span>
+
+<span class="va">count</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/selectize_count.html">selectize_count</a></span><span class="op">(</span><span class="va">selectize</span><span class="op">)</span>
+
+<span class="va">names_select</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/selectize_names.html">selectize_names</a></span><span class="op">(</span><span class="va">selectize</span><span class="op">)</span>
+
+<span class="va">count</span>
+<span class="co">#&gt; [1] 2</span>
+
+<span class="va">names_select</span>
+<span class="co">#&gt; [1] "Naruto"     "Death Note"</span></code></pre></div>
+<p>As you can see those functions are pretty easy but since we use them more than once in the shiny it was usefull to have them like that. Using those results, we create numeric boxes to give the ability to the user to put his own scores into the app. This is done through the function <code><a href="../reference/create_numeric_input.html">create_numeric_input()</a></code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">boxes</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/create_numeric_input.html">create_numeric_input</a></span><span class="op">(</span>selectednames <span class="op">=</span> <span class="va">names_select</span>,
+                              selectedcounts <span class="op">=</span> <span class="va">count</span>,
+                              min_user <span class="op">=</span> <span class="fl">1</span>,
+                              max_user <span class="op">=</span> <span class="fl">10</span>,
+                              placeholder <span class="op">=</span> <span class="fl">5</span>,
+                              wanted_step <span class="op">=</span> <span class="fl">0.5</span>,
+                              id <span class="op">=</span> <span class="st">"weights"</span><span class="op">)</span>
+  
+<span class="va">boxes</span></code></pre></div>
+<div class="form-group shiny-input-container">
+<label class="control-label" id="weights_1-label" for="weights_1">Naruto Score</label>
+<input id="weights_1" type="number" class="form-control" value="5" min="1" max="10" step="0.5">
+</div>
+<div class="form-group shiny-input-container">
+<label class="control-label" id="weights_2-label" for="weights_2">Death Note Score</label>
+<input id="weights_2" type="number" class="form-control" value="5" min="1" max="10" step="0.5">
+</div>
+<p>As you can see this creates two boxes since there were two anime selected. To recover the scores we then use the <code><a href="../reference/score_recovery.html">score_recovery()</a></code> function as follow. Note that since we are not in the application and that the <code>input</code> parameter does not exist, this will not recover the weights so we will have to select them arbitrarily:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/score_recovery.html">score_recovery</a></span><span class="op">(</span>selectedcounts <span class="op">=</span> <span class="va">count</span>, input <span class="op">=</span> <span class="va">input</span>, id <span class="op">=</span> <span class="st">"weights"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">weight_to_use</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">5</span><span class="op">)</span></code></pre></div>
+<p>Then, with all this we create a table to which we add a user id that is voluntarily extremely high to avoid conflicts with other id’s:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">temp_tibble</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Name <span class="op">=</span> <span class="va">names_select</span>, rating <span class="op">=</span> <span class="va">weight_to_use</span><span class="op">)</span>
+
+<span class="va">anime_selected</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">anime</span>, <span class="va">temp_tibble</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Name"</span> <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">anime_selected</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">anime_selected</span>, <span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">names_select</span><span class="op">)</span>
+<span class="va">anime_selected</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">anime_selected</span>, user_id <span class="op">=</span> <span class="fl">999999999</span><span class="op">)</span></code></pre></div>
+<p>We can now compute the user item matrix using <code><a href="../reference/user_item_matrix.html">user_item_matrix()</a></code>again, but this time we will add rows with the <code>anime_selected</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">user_item_2</span> <span class="op">&lt;-</span> <span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/user_item_matrix.html">user_item_matrix</a></span><span class="op">(</span><span class="va">anime_with_ratings</span>,
+                                           adding_row <span class="op">=</span> <span class="cn">TRUE</span>,
+                                           row_data <span class="op">=</span> <span class="va">anime_selected</span><span class="op">)</span></code></pre></div>
+<p>And finally we will run the <code><a href="../reference/user_based_recom.html">user_based_recom()</a></code> function that will:</p>
+<ul>
+<li>Select the newly added row with the user scores</li>
+<li>Compute it’s similarity to other users with the <code><a href="../reference/cos_similarity.html">cos_similarity()</a></code> function</li>
+<li>Select the most similar users depending on the number of nearest neighbors wanted</li>
+<li>Filter for the anime with at east one similar user score</li>
+<li>And will finally select the 5 anime that were the best graded by similar users</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ProjectG5</span><span class="fu">::</span><span class="fu"><a href="../reference/user_based_recom.html">user_based_recom</a></span><span class="op">(</span>userid <span class="op">=</span> <span class="fl">999999999</span>,
+                            user_item_matrix <span class="op">=</span> <span class="va">user_item_2</span>,
+                            ratings_data <span class="op">=</span> <span class="va">anime_with_ratings</span>,
+                            n_recommendation <span class="op">=</span> <span class="fl">5</span>,
+                            threshold <span class="op">=</span> <span class="fl">1</span>,
+                            nearest_neighbors <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 6</span>
+<span class="co">#&gt; # Groups:   item_id, Name, Episodes [5]</span>
+<span class="co">#&gt;   item_id Name           Episodes Duration count rating</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;chr&gt;       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 ID6     Trigun         26             24     3   10  </span>
+<span class="co">#&gt; 2 ID2001  Gurren Lagann  27             24     2   10  </span>
+<span class="co">#&gt; 3 ID47    AKIRA          1             124     4    9.5</span>
+<span class="co">#&gt; 4 ID1     Cowboy Bebop   26             24     2    9.5</span>
+<span class="co">#&gt; 5 ID10083 Shiki Specials 2              23     2    9.5</span></code></pre></div>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

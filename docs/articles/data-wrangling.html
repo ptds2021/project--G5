@@ -76,6 +76,9 @@
     <li>
       <a href="../articles/data-wrangling.html">2. Data Wrangling</a>
     </li>
+    <li>
+      <a href="../articles/application.html">3. Application</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -102,6 +105,14 @@
 
     
     
+<div id="datasets-creation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#datasets-creation" class="anchor"></a>Datasets creation</h1>
+<p>To create the data we have into the package, we downloaded some from Kaggle <a href="https://www.kaggle.com/hernan4444/anime-recommendation-database-2020?select=watching_status.csv">Anime dataset</a>. You will have to do it too, they are not in the GitHub since their guidelines ask to avoid, if possible to have repositories larger than 1Gb. Since we need to download both <code>anime</code>and <code>animelist</code> and that the second one is 1.9 Gb, we decided to not let them on the GitHub but to simply guide you to be able to reproduce our work.</p>
+<div id="anime" class="section level2">
+<h2 class="hasAnchor">
+<a href="#anime" class="anchor"></a>Anime</h2>
+<p>So, to create our <code>anime</code> data, we will first load the needed packages : <code>readr</code>, <code>dplyr</code> and <code>tidyverse</code>. After that we load the data into R and remove some useless columns that we will not use.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#import dataset</span>
 
@@ -123,10 +134,10 @@
     `Score-2` <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/col_skip.html">col_skip</a></span><span class="op">(</span><span class="op">)</span>,
     `Score-1` <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/col_skip.html">col_skip</a></span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span>
-<span class="op">)</span>
-
-
-<span class="co">#cleaning data: no NA nor Unknown and order by ranking</span>
+<span class="op">)</span></code></pre></div>
+<p>Once this is done, we rename the column <code>English name</code> so we avoid troubles while using it. We then chose to use the English name as the basic name when available and keep the original one when there is no english name. We then add “ID” in front of the anime id’s to avoid problems while creating matrices. Finally we filter for Unknown values and for some Seasons, since some anime appears many times, once for the complete version and then one time for each season which we do not need. We finally arrange by popularity since it represented a good indicator for how an anime is liked at he time the table was created.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#cleaning data: no NA nor Unknown and order by ranking</span>
 <span class="va">anime</span> <span class="op">&lt;-</span> <span class="va">anime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>english_name <span class="op">=</span> <span class="st">'English name'</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">english_name</span> <span class="op">==</span> <span class="st">'Unknown'</span> <span class="op">~</span> <span class="va">Name</span>,
@@ -144,10 +155,11 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Popularity</span><span class="op">)</span>
 
 <span class="co"># separate genders</span>
-<span class="co">#anime &lt;- anime %&gt;% separate(Genders, c("gender1", "gender2", "gender3", "gender4","gender5", "gender6"), sep=",")</span>
-
-<span class="co">#Convert 2hr into 2hr.00min</span>
-<span class="va">anime</span> <span class="op">&lt;-</span> <span class="va">anime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="co">#anime &lt;- anime %&gt;% separate(Genders, c("gender1", "gender2", "gender3", "gender4","gender5", "gender6"), sep=",")</span></code></pre></div>
+<p>We then created some categories for duration that we are not really using anymore, but since they are present in the data provided we show you how it was created.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Convert 2hr into 2hr.00min</span>
+<span class="va">anime</span> <span class="op">&lt;-</span> <span class="va">anime</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     Duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Duration</span> <span class="op">==</span> <span class="st">"2 hr."</span>, <span class="st">"2 hr. 00 min"</span>,
                       <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Duration</span> <span class="op">==</span> <span class="st">"1 hr."</span>, <span class="st">"1 hr. 00 min"</span>,
@@ -169,7 +181,7 @@
 
 <span class="co">#mutate a new column to categorize duration</span>
 <span class="va">anime</span> <span class="op">&lt;-</span>
-  <span class="va">anime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Duration_C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span>
+  <span class="va">anime</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Duration_C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span>
     <span class="va">Duration</span> <span class="op">&lt;</span> <span class="fl">30</span>,
     <span class="st">"Less than 30min"</span>,
     <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span>
@@ -179,8 +191,8 @@
       <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Duration</span> <span class="op">&gt;=</span> <span class="fl">60</span> <span class="op">&amp;</span>
                <span class="va">Duration</span> <span class="op">&lt;</span> <span class="fl">120</span>, <span class="st">"more than 1h"</span>, <span class="st">"more than 2h"</span><span class="op">)</span>
     <span class="op">)</span>
-  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">Duration_C</span>, .after <span class="op">=</span> <span class="va">Duration</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">Duration_C</span>, .after <span class="op">=</span> <span class="va">Duration</span><span class="op">)</span><span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">Duration</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">anime</span><span class="op">$</span><span class="va">Duration_C</span> <span class="op">&lt;-</span>
@@ -190,21 +202,28 @@
                <span class="st">"Less than 1h"</span>,
                <span class="st">"more than 1h"</span>,
                <span class="st">"more than 2h"</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">anime</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/anime_tidy.RData"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
+<p>Finally we save the data in csv, that is not provided, and into a format that can be exported in a package easily.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">anime</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/anime_tidy.RData"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span><span class="op">(</span><span class="va">anime</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+</div>
+<div id="anime-with-ratings" class="section level2">
+<h2 class="hasAnchor">
+<a href="#anime-with-ratings" class="anchor"></a>Anime with ratings</h2>
+<p>First, we load the dataset animelist.csv still from Kaggle.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#import dataset</span>
 
 <span class="co">#This was kept locally and not added to the package since the document contains 107 milion lines ans is after this step not used anymore into the application</span>
 <span class="va">anime_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"~/Downloads/animelist.csv"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Then we groups by user ID to filter for the largest scorer in order to filter as many lines as possible. This helps us reducing from a 100 million rows to 573’588 rows which then makes it usable.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#getting list of people with more than 1500 ratings</span>
-<span class="va">ratings_per_user</span> <span class="op">&lt;-</span> <span class="va">anime_list</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">user_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">tally</a></span><span class="op">(</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">ratings_per_user</span> <span class="op">&lt;-</span> <span class="va">anime_list</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">user_id</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">tally</a></span><span class="op">(</span><span class="op">)</span><span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">4000</span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ratings_per_user</span><span class="op">)</span><span class="op">+</span>
@@ -212,31 +231,36 @@
 
 
 <span class="va">users_kept</span> <span class="op">&lt;-</span> <span class="va">ratings_per_user</span><span class="op">$</span><span class="va">user_id</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Finally, we filter the table by those users we keep, we then join it to the anime table to be able to recover some data about them. To avoid having too large data we take only what interests us. Finally as like as before we save the data in both csv and the exportable format for packages.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#using the list to create a table containing the ratings and the anime infos</span>
-<span class="va">ratings_kept</span> <span class="op">&lt;-</span> <span class="va">anime_list</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">user_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">users_kept</span> <span class="op">&amp;</span> <span class="va">rating</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>item_id <span class="op">=</span> <span class="va">anime_id</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">ratings_kept</span> <span class="op">&lt;-</span> <span class="va">anime_list</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">user_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">users_kept</span> <span class="op">&amp;</span> <span class="va">rating</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>item_id <span class="op">=</span> <span class="va">anime_id</span><span class="op">)</span><span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>item_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"ID%s"</span>, <span class="va">item_id</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">anime_with_ratings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">anime</span>, <span class="va">ratings_kept</span>, by<span class="op">=</span> <span class="st">"item_id"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">anime_with_ratings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">anime</span>, <span class="va">ratings_kept</span>, by<span class="op">=</span> <span class="st">"item_id"</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">item_id</span>, <span class="va">user_id</span>, <span class="va">Name</span>, <span class="va">english_name</span>, <span class="va">Episodes</span>, <span class="va">Duration</span>, <span class="va">rating</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">anime_with_ratings</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"inst/extdata/anime_with_ratings.csv"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span><span class="op">(</span><span class="va">anime_with_ratings</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-
-<span class="co">#check for null ratings since we want to avoid them</span>
-<span class="va">anime_with_ratings_null</span> <span class="op">&lt;-</span> <span class="va">anime_with_ratings</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span><span class="op">(</span><span class="va">anime_with_ratings</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>Then we also checked that there are no anime without ratings that was kept in a way or another which does not seem to be the case here. Therefore the data is usable for the rest that you will find in the vignette!</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#check for null ratings since we want to avoid them</span>
+<span class="va">anime_with_ratings_null</span> <span class="op">&lt;-</span> <span class="va">anime_with_ratings</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">rating</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">anime_without_ratings_vc</span> <span class="op">&lt;-</span> <span class="va">anime_with_ratings_null</span><span class="op">$</span><span class="va">item_id</span></code></pre></div>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

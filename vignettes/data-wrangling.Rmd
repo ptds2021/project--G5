@@ -7,7 +7,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Datasets creation
 
+To create the data we have into the package, we downloaded some from Kaggle [Anime dataset](https://www.kaggle.com/hernan4444/anime-recommendation-database-2020?select=watching_status.csv). You will have to do it too, they are not in the GitHub since their guidelines ask to avoid, if possible to have repositories larger than 1Gb. Since we need to download both `anime`and `animelist` and that the second one is 1.9 Gb, we decided to not let them on the GitHub but to simply guide you to be able to reproduce our work.
+
+## Anime 
+
+So, to create our `anime` data, we will first load the needed packages : `readr`, `dplyr` and `tidyverse`. After that we load the data into R and remove some useless columns that we will not use.
 
 ```{r, eval = FALSE}
 #import dataset
@@ -31,7 +37,11 @@ anime <- read_csv(
     `Score-1` = col_skip()
   )
 )
+```
 
+Once this is done, we rename the column `English name` so we avoid troubles while using it. We then chose to use the English name as the basic name when available and keep the original one when there is no english name. We then add "ID" in front of the anime id's to avoid problems while creating matrices. Finally we filter for Unknown values and for some Seasons, since some anime appears many times, once for the complete version and then one time for each season which we do not need. We finally arrange by popularity since it represented a good indicator for how an anime is liked at he time the table was created. 
+
+```{r, eval = FALSE}
 
 #cleaning data: no NA nor Unknown and order by ranking
 anime <- anime %>%
@@ -53,6 +63,11 @@ anime <- anime %>%
 # separate genders
 #anime <- anime %>% separate(Genders, c("gender1", "gender2", "gender3", "gender4","gender5", "gender6"), sep=",")
 
+```
+
+We then created some categories for duration that we are not really using anymore, but since they are present in the data provided we show you how it was created. 
+
+```{r, eval = FALSE}
 #Convert 2hr into 2hr.00min
 anime <- anime %>%
   mutate(
@@ -98,14 +113,20 @@ anime$Duration_C <-
                "more than 1h",
                "more than 2h")
   )
+```
 
+Finally we save the data in csv, that is not provided, and into a format that can be exported in a package easily.
+
+```{r, eval = FALSE}
 write.csv(anime, here::here("data/anime_tidy.RData"))
 
 usethis::use_data(anime, overwrite = TRUE)
 
 ```
 
+## Anime with ratings
 
+First, we load the dataset animelist.csv still from Kaggle. 
 
 ```{r, eval = FALSE}
 #import dataset
@@ -113,6 +134,8 @@ usethis::use_data(anime, overwrite = TRUE)
 #This was kept locally and not added to the package since the document contains 107 milion lines ans is after this step not used anymore into the application
 anime_list <- read.csv(here::here("~/Downloads/animelist.csv"))
 ```
+
+Then we groups by user ID to filter for the largest scorer in order to filter as many lines as possible. This helps us reducing from a 100 million rows to 573'588 rows which then makes it usable. 
 
 ```{r, eval = FALSE}
 #getting list of people with more than 1500 ratings
@@ -128,6 +151,8 @@ ggplot(ratings_per_user)+
 users_kept <- ratings_per_user$user_id
 ```
 
+Finally, we filter the table by those users we keep, we then join it to the anime table to be able to recover some data about them. To avoid having too large data we take only what interests us. Finally as like as before we save the data in both csv and the exportable format for packages. 
+
 ```{r, eval = FALSE}
 #using the list to create a table containing the ratings and the anime infos
 ratings_kept <- anime_list %>%
@@ -141,7 +166,11 @@ anime_with_ratings <- left_join(anime, ratings_kept, by= "item_id") %>%
 write.csv(anime_with_ratings, here::here("inst/extdata/anime_with_ratings.csv"))
 
 usethis::use_data(anime_with_ratings, overwrite = TRUE)
+```
 
+Then we also checked that there are no anime without ratings that was kept in a way or another which does not seem to be the case here. Therefore the data is usable for the rest that you will find in the vignette! 
+
+```{r, eval = FALSE}
 
 #check for null ratings since we want to avoid them
 anime_with_ratings_null <- anime_with_ratings %>%

@@ -22,3 +22,6 @@ navbar:
         href: articles/vignette-G5.html
       - text: 2. Data Wrangling
         href: articles/data-wrangling.html
+      - text: 3. Application
+        href: articles/application.html
+

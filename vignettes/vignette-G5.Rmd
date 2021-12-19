@@ -14,21 +14,169 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(ProjectG5)
 ```
 
-### Welcome to our project about anime !
+## Welcome to our project about anime !
 
-The Shiny App we have created for this project concerns an anime recommendation based on these parameters:
-- age of the person
-- preferred anime genre (action, fantasy, etc.)
-- time available to watch the anime
+The aim of the project was to create a package that would enable someone to use a shiny application to find an anime to watch. At first we started by letting the user do some simple filter with his age, type of interest and freetime available which would then return a table composed of all possible anime that are ordered by Popularity which takes into account: user scores, how much it was recently watched, etc. 
 
-These different parameters will give a recommendation of an anime name.
+We then extended the application by providing two other was taken from Ander Fernández Jauregui's [Tutorial](https://anderfernandez.com/en/blog/how-to-code-a-recommendation-system-in-r/) and adapting it to our data:
 
-### Example of how to use the application
+1) An Item Based Recommendation. This is done through the creation of a user item matrix and through comparison of animes on this matrix, see the function explanations under to better understand.
 
-Let's take the example of a 15 years old person, who likes fantasy and comedy anime and has 30 minutes to watch an episode. This person will first write his/her age, then the two genres he/she likes (Comedy, Fantasy) thanks to the drop-down menu offered by the application. Then, she will take the cursor and indicate "30" in the time available per minutes.
+2) And the User Based Recommendation that uses the same user item matrix but this time we add rows depending on the user choice and scores and search what similar users liked.
 
-We will then notice that Naruto will appear first as a recommendation. This seems plausible, since Naruto is an anime mainly aimed at children and teenagers. Moreover, each episode of Naturo lasts between 20 and 30 minutes.
+## Data from the package
+
+In the package you will find some data. You can see how it was created in the Data wrangling article. We have two tables
+
+### Anime
+
+Data set composed of all kept anime with many parameters, see the reference part to check everything. To access it you can use:
+
+```{r, warning=FALSE, eval=FALSE}
+anime <- ProjectG5::anime
+```
+
+### Anime with ratings
+
+Data set composed of all kept anime with their ratings from all users that we keps, see the reference part to check everything. To access it you can use:
+
+```{r, warning=FALSE, eval=FALSE}
+anime_with_ratings <- ProjectG5::anime_with_ratings
+```
+
+## Launching the application through R
+
+To launch the application when you ar ein R, simple run : 
+
+```{r, warning=FALSE, eval=FALSE}
+ProjectG5::anime_finder()
+```
+
+## Function walkthrough
+
+We will go through the function by looking at each tab one after the other in order to  make it easier for someone to understand what is happening. 
+
+### Basic tab (I am new)
+
+Let's first look at the function used in our first simple recommendation tab, the `newcommer_recom()`. In this function we use the user selection from the application to filter the table and return all animes fitting what he wishes. Note that an anime is selected when one of the gender selected appears in it. Here we take the example of a 15 years old, that likes sport and have 30 minutes before him to watch something it will:
+
+- Use the age to filter the right age Rating classes
+- Into those one select all that have Sport as a type
+- Finally filter for the ones that are 30 minutes or shorter per episode.
+
+```{r, warning=FALSE}
+ProjectG5::newcommer_recom(anime, 15, "Sport", 30)
+```
+
+
+### Item based recommendation tab (I am an expert)
+
+For this recommendation, we will first need to compute the user item matrix from the `anime_with_ratings` data, for this one there is no need to add rows: 
+
+```{r, warning=FALSE}
+item_matrix_1 <- ProjectG5::user_item_matrix(anime_with_ratings)
+```
+
+Let's now pretend that the user selected the anime `Naruto`: 
+
+```{r, warning=FALSE}
+selected_anime <- "Naruto"
+```
+
+Now that we have all of what we need let's run the function that will:
+
+- Find the anime in the matrix
+- Filter only for the users that scored it
+- Then uses the `cos_similarity()` function to compute the similarity in between the selected anime and all the other ones
+- Output only the 5 most similar anime 
+
+```{r, warning=FALSE}
+ProjectG5::item_recommendation(selected_item_name = selected_anime,
+                               user_item_matrix = item_matrix_1,
+                               n_recommendation = 5,
+                               data = anime)
+```
+
+### User based recommendation tab (I am a judging expert)
+
+For this recommendation, we will first need to compute the user item matrix from the `anime_with_ratings` data, but this time we will need to add rows: 
+
+To do so let's look at both the `selectize_count()` and the `selectize_names()` functions. For this, let's pretend the user selected the anime `Naruto` and `Death Note`.
+
+```{r, warning=FALSE}
+selectize <- c("Naruto", "Death Note")
+
+count <- ProjectG5::selectize_count(selectize)
+
+names_select <- ProjectG5::selectize_names(selectize)
+
+count
+
+names_select
+```
+
+As you can see those functions are pretty easy but since we use them more than once in the shiny it was usefull to have them like that. Using those results, we create numeric boxes to give the ability to the user to put his own scores into the app. This is done through the function `create_numeric_input()`:
+
+```{r, warning=FALSE}
+boxes <- ProjectG5::create_numeric_input(selectednames = names_select,
+                              selectedcounts = count,
+                              min_user = 1,
+                              max_user = 10,
+                              placeholder = 5,
+                              wanted_step = 0.5,
+                              id = "weights")
+  
+boxes
+```
+
+As you can see this creates two boxes since there were two anime selected. To recover the scores we then use the `score_recovery()` function as follow. Note that since we are not in the application and that the `input` parameter does not exist, this will not recover the weights so we will have to select them arbitrarily:
+
+```{r, warning=FALSE, eval = FALSE}
+weights <- ProjectG5::score_recovery(selectedcounts = count, input = input, id = "weights")
+
+
+```
+
+```{r, warning=FALSE}
+weight_to_use <- c(10,5)
+```
+
+Then, with all this we create a table to which we add a user id that is voluntarily extremely high to avoid conflicts with other id's:
+
+```{r, warning=FALSE}
+temp_tibble <- tibble::tibble(Name = names_select, rating = weight_to_use)
+
+anime_selected <- dplyr::left_join(anime, temp_tibble, by = c("Name" = "Name"))
+anime_selected <- dplyr::filter(anime_selected, Name %in% names_select)
+anime_selected <- dplyr::mutate(anime_selected, user_id = 999999999)
+```
+
+We can now compute the user item matrix using `user_item_matrix()`again, but this time we will add rows with the `anime_selected`:
+
+```{r, warning=FALSE}
+user_item_2 <- ProjectG5::user_item_matrix(anime_with_ratings,
+                                           adding_row = TRUE,
+                                           row_data = anime_selected)
+```
+
+And finally we will run the `user_based_recom()` function that will: 
+
+- Select the newly added row with the user scores
+- Compute it's similarity to other users with the `cos_similarity()` function
+- Select the most similar users depending on the number of nearest neighbors wanted
+- Filter for the anime with at east one similar user score
+- And will finally select the 5 anime that were the best graded by similar users 
+
+```{r, warning=FALSE}
+ProjectG5::user_based_recom(userid = 999999999,
+                            user_item_matrix = user_item_2,
+                            ratings_data = anime_with_ratings,
+                            n_recommendation = 5,
+                            threshold = 1,
+                            nearest_neighbors = 10)
+
+```
