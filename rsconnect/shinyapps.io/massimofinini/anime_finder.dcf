@@ -1,0 +1,14 @@
+name: anime_finder
+title: anime_finder
+username:
+account: massimofinini
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5348841
+bundleId: 5390744
+url: https://massimofinini.shinyapps.io/anime_finder/
+when: 1639932788.82063
+lastSyncTime: 1639932788.82063
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .Rbuildignore|.RDataTmp|_pkgdown.yml|data/.DS_Store|data/anime.rda|data/anime_with_ratings.rda|DESCRIPTION|inst/.DS_Store|libs/.DS_Store|libs/crosstalk/.DS_Store|libs/dt-core/.DS_Store|libs/leaflet/.DS_Store|libs/rstudio_leaflet/.DS_Store|LICENSE|LICENSE.md|NAMESPACE|R/anime_finder.R|R/anime_functions.R|R/generic_functions.R|R/global.R|README.md|vignettes/.DS_Store|vignettes/.gitignore|vignettes/application.Rmd|vignettes/data-wrangling.Rmd|vignettes/vignette-G5.Rmd|docs|man|ProjectG5|tests
